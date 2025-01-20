@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %} Main page {% endblock %}
+
+{% block content %}
+<h1> This are my posts</h1>
+<div style="height:20px;"></div>
+
+
+{% for post in posts %}
+
+<h2> {{ post[2] }}</h2>
+
+<p>{{ post[3][0:10] }}... <a href="/post/{{ post[1] }}"> read more.</a></p> 
+
+<div style="height:10px;"></div>
+{% endfor %}
+
+{% endblock %}
