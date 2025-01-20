@@ -1,3 +1,44 @@
 * {
-    background-color: #333029;
+    background-color:#21201b;
+    color: white;
+    font-family:  "Source Code Pro", "Monaco", sans-serif;
 }
+.title {
+     width:70%;
+     margin:auto;
+     text-align: center;
+     font-size: 50px;
+}
+
+.square {
+    width: 80%;
+    margin: auto;
+}
+
+.square_small {
+    width: 33%;
+    height: 50px;
+    float: left;
+    text-align: center;
+}
+
+.square_small:hover {
+    background-color: white;
+    color: black;
+}
+
+@media only screen and (max-width: 500px) {
+    .square_small {
+	width: 100%;
+    }
+    .title {
+	font-size: 35px;
+    }
+}
+
+.paragraph {
+    clear: both;
+    width: 80%;
+    margin: auto;
+}
+

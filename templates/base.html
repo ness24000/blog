@@ -1,22 +1,25 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <title>{% block title %} {% endblock %}</title>
-      </head>
-      <body>
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <a class="navbar-brand" href="{{
-					  url_for('index')}}">FlaskBlog</a>
-	    <a class="navbar-brand" href="{{ url_for('about')}}">About</a>
-        </nav>
-	
-        <div class="container">
-            {% block content %} {% endblock %}
-        </div>
-	
+    <title>{% block title %} {% endblock %}</title>
+    <meta name="viewport" content="width:device-width,initial-scale=1.0" />
+    <link rel="stylesheet" href="{{
+    url_for('static',filename='style.css') }}">
+  </head>
+  <body>
+    <div style="height: 2.5vw;"> </div>
+    <h1 class="title" style="position:sticky;">Text(o)s</h1>
+    <div style="height: 1.5vw;"> </div>
+    
+    <div class="square">
+      <a class="square_small" href="{{ url_for('index') }}"> Recent </a>
+      <a class="square_small" href="{{ url_for('about') }}"> About </a>
+      <div class="square_small"> Search </div>
+    </div>    
+    <div style="height: 2vw; clear: both;"> </div>
 
-      </body>
+    <div class="paragraph">
+        {% block content %} {% endblock %}
+    </div>
+  </body>
 </html>
