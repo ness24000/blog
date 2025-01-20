@@ -16,10 +16,11 @@
 }
 
 .square_small {
-    width: 33%;
+    width: 50%;
     height: 50px;
     float: left;
     text-align: center;
+    text-decoration: none;
 }
 
 .square_small:hover {
@@ -42,3 +43,7 @@
     margin: auto;
 }
 
+.post_link:hover {
+    background-color: white;
+    color: black;
+}

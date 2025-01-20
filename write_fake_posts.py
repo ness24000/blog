@@ -1,23 +1,28 @@
 import pandas as pd
-
-posts_df = pd.DataFrame({"title": [], "content": []})
+from datetime import date
+posts_df = pd.DataFrame({"title": [], "date": [], "content": []})
 
 posts_df.loc[len(posts_df)] = {
     "title": "first article",
+    "date": date.today().isoformat(),
     "content": "Lalala stuff and more stuff",
 }
 
 posts_df.loc[len(posts_df)] = {
     "title": "second article",
+    "date": date.today().isoformat(),
     "content": "This is about other stuff",
 }
 
 posts_df.loc[len(posts_df)] = {
     "title": "third article",
+    "date": date.today().isoformat(),
     "content": "This is about water",
 }
 
-posts_df.loc[len(posts_df)] = { "title": "a love letter", "content":
+posts_df.loc[len(posts_df)] = { "title": "a love letter",
+                                "date": date.today().isoformat(),
+                                "content":
                                """My Dearest Love,
                                
                                As I sit here, lost in thought, my mind can only wander to you. Your presence in my life has been a gift beyond compare, and I cannot help but pour out my heart in this letter.

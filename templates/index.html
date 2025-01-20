@@ -6,8 +6,10 @@
 {% for post in posts %}
 
 <h2> {{ post[2] }}</h2>
-
-<p>{{ post[3][0:10] }}... <a href="/post/{{ post[1] }}"> read more.</a></p> 
+<p> {{ post[3] }}</p>
+<p>{{ post[4][0:10] }}...
+ <a class="post_link" href="/post/{{ post[1] }}"> read more</a>
+</p> 
 
 <div style="height:10px;"></div>
 {% endfor %}
