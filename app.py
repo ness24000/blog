@@ -1,11 +1,12 @@
 from flask import Flask, render_template
 import pandas as pd
+import numpy as np
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    posts = pd.read_csv("./posts_df.csv").to_records()
+    posts = np.flip(pd.read_csv("./posts_df.csv").to_records())
     return render_template("index.html", posts = posts)
 
 @app.route("/about")
