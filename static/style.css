@@ -47,3 +47,10 @@
     background-color: white;
     color: black;
 }
+
+img {
+    max-width: 80%;
+    max-height: 500px;
+    display: block;
+    margin: auto;
+}
