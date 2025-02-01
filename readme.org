@@ -1,25 +1,26 @@
 #+TITLE: A blog
 
-[2025/01/20] The basic thing is created. Instead of a database I used
-a csv file. Nice things to add:
+This is a simple blog built in Python Flask. Original inspiration can
+be found here [[https://medium.com/@noransaber685/building-a-flask-blog-a-step-by-step-guide-for-beginners-8bffe925cd0e][here]].
+
+TO-DO:
 - [ ] A comfortable method to add new posts. The [[https://medium.com/@noransaber685/building-a-flask-blog-a-step-by-step-guide-for-beginners-8bffe925cd0e][tutorial]] creates a
   route (i.e. url) where one can only access with a certain token and
   then develops a front-end for adding new articles. I don't really
   want this since I much rather edit my article here in emacs. I would
   like a function (or some automation) that quickly converts a txt/org
   file into an entry in my csv file of posts.
-- [ ] Handling images. It would be nice if the posts could have
+- [ ] A search function.
+- [ ] Set console mono space font as default.
+- [X] Handling images. It would be nice if the posts could have
   images. An idea I have is having a folder with images and the post
   containing the necessary elements to display it:
   #+begin_src html
     <img src="{{ url_for('static', filename='img1.png') }}">
   #+end_src
 
-- [ ] A search function. 
+
   
-[2025/01/18] The idea is to create a blog using Python flask, HTML &
-CSS done by myself, and a database. There is a nice tutorial here:
-[[https://medium.com/@noransaber685/building-a-flask-blog-a-step-by-step-guide-for-beginners-8bffe925cd0e][here]]. So far only an idea of the front end design is done.
 
 
 
