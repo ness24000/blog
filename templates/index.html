@@ -7,7 +7,7 @@
 
 <h2> {{ post[1] }}</h2>
 <p> {{ post[2] }}</p>
-<p>{{ post[3][0:10] }}...
+<p>{{ post[3][0:10]|safe }}...
  <a class="post_link" href="/post/{{ post[0] }}"> read more</a>
 </p> 
 
