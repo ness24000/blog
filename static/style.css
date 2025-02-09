@@ -1,7 +1,7 @@
 * {
     background-color:#21201b;
     color: white;
-    font-family:  "Source Code Pro", "Monaco", sans-serif;
+    font-family:  "Source Code Pro", "Monaco", monospace, sans-serif;
 }
 .title {
      width:70%;
