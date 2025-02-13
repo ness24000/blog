@@ -17,7 +17,7 @@ def main(file_name:str):
 
     print("title", title)
     print("date", date)
-    print("content", content)
+    print("content", markdown.markdown(content))
 
 
 if __name__ == "__main__":
