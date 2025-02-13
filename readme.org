@@ -4,12 +4,6 @@ This is a simple blog built in Python Flask. Original inspiration can
 be found here [[https://medium.com/@noransaber685/building-a-flask-blog-a-step-by-step-guide-for-beginners-8bffe925cd0e][here]].
 
 TO-DO:
-- [ ] A comfortable method to add new posts. The [[https://medium.com/@noransaber685/building-a-flask-blog-a-step-by-step-guide-for-beginners-8bffe925cd0e][tutorial]] creates a
-  route (i.e. url) where one can only access with a certain token and
-  then develops a front-end for adding new articles. I don't really
-  want this since I much rather edit my article here in emacs. I would
-  like a function (or some automation) that quickly converts a txt/org
-  file into an entry in my csv file of posts.
 - [ ] A search function.
 - [ ] Set console mono space font as default.
 - [X] Handling images. It would be nice if the posts could have
@@ -18,6 +12,12 @@ TO-DO:
   #+begin_src html
     <img src="{{ url_for('static', filename='img1.png') }}">
   #+end_src
+- [X] A comfortable method to add new posts. The [[https://medium.com/@noransaber685/building-a-flask-blog-a-step-by-step-guide-for-beginners-8bffe925cd0e][tutorial]] creates a
+  route (i.e. url) where one can only access with a certain token and
+  then develops a front-end for adding new articles. I don't really
+  want this since I much rather edit my article here in emacs. I would
+  like a function (or some automation) that quickly converts a txt/org
+  file into an entry in my csv file of posts.
 
 
   
