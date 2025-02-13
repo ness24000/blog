@@ -1,10 +1,11 @@
 import markdown
 import typer
 import re
+import sqlite3
 
 IMG_PATTERN = r"!\[.*\]\("
 
-def main(file_name:str):
+def main(file_name:str, path_to_db: str = "posts.db"):
 
     with open(file_name, "r") as file: 
         title, date, content = re.split("\n+",file.read(), maxsplit=2)
@@ -15,10 +16,15 @@ def main(file_name:str):
     
     content = re.sub(IMG_PATTERN, produce_image_path, content)
 
-    print("title", title)
-    print("date", date)
-    print("content", markdown.markdown(content))
+    content = markdown.markdown(content)
 
+    con = sqlite3.connect(path_to_db)
+    cur = con.cursor()
+
+    cur.execute("INSERT INTO posts(title, date,content) VALUES (?,?,?)", (title, date, content))
+    con.commit()
+
+    print(f"The image folder should be called:\n{img_folder}")
 
 if __name__ == "__main__":
     typer.run(main)
