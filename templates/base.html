@@ -1,26 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{% block title %} {% endblock %}</title>
-    <meta name="viewport" content="width:device-width,initial-scale=1.0" />
-    <link rel="stylesheet" href="{{
-    url_for('static',filename='style.css') }}">
-  </head>
-  <body>
-    <div style="height: 2.5vw;"> </div>
-    <h1 class="title" href="{{ url_for('index') }}">
-      <a class="title_link" href="{{ url_for('index') }}"> text(o)s </a>
-    </h1>
-    <div style="height: 1.5vw;"> </div>
-    
-    <div class="square">
-      <a class="square_small" href="{{ url_for('index') }}"> posts </a>
-      <a class="square_small" href="{{ url_for('about') }}"> about </a>
-    </div>    
-    <div style="height: 2vw; clear: both;"> </div>
 
-    <div class="paragraph">
-        {% block content %} {% endblock %}
-    </div>
-  </body>
+<head>
+  <title>{% block title %} {% endblock %}</title>
+  <meta name="viewport" content="width:device-width,initial-scale=1.0" />
+  <link rel="stylesheet" href="{{
+    url_for('static',filename='style.css') }}">
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$']]
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+</head>
+
+<body>
+  <div style="height: 2.5vw;"> </div>
+  <h1 class="title" href="{{ url_for('index') }}">
+    <a class="title_link" href="{{ url_for('index') }}"> text(o)s </a>
+  </h1>
+  <div style="height: 1.5vw;"> </div>
+
+  <div class="square">
+    <a class="square_small" href="{{ url_for('index') }}"> posts </a>
+    <a class="square_small" href="{{ url_for('about') }}"> about </a>
+  </div>
+  <div style="height: 2vw; clear: both;"> </div>
+
+  <div class="paragraph">
+    {% block content %} {% endblock %}
+  </div>
+</body>
+
 </html>
