@@ -19,7 +19,8 @@ TO-DO:
   like a function (or some automation) that quickly converts a txt/org
   file into an entry in my csv file of posts.
 
-
+Inspiration:
+https://linuxize.com/
   
 
 
