@@ -1,6 +1,7 @@
-from flask import Flask, render_template
-import numpy as np
 import sqlite3
+
+import numpy as np
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
