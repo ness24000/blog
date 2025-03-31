@@ -1,7 +1,8 @@
-import markdown
-import typer
 import re
 import sqlite3
+
+import markdown
+import typer
 
 IMG_PATTERN = r"!\[.*\]\("
 
