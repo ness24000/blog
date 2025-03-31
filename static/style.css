@@ -16,7 +16,7 @@
 
 .square {
     width: 95%;
-    max-width: 750px;
+    max-width: 850px;
     margin: auto;
 }
 
@@ -46,10 +46,10 @@
 
 .blog_content {
     clear: both;
-    width: 95%;
-    max-width: 750px;
+    width: 80%;
+    max-width: 850px;
     margin: auto;
-    font-size: 19px;
+    font-size: 21px;
 }
 .blog_content > p {
     line-height: 150%;
