@@ -17,11 +17,13 @@ def main(file_name:str, path_to_db: str = "posts.db"):
     content = re.sub(IMG_PATTERN, produce_image_path, content)
 
     content = markdown.markdown(content)
+    
+    preview = re.findall("<p>.*?</p>", content, flags=re.DOTALL)[0]
 
     con = sqlite3.connect(path_to_db)
     cur = con.cursor()
 
-    cur.execute("INSERT INTO posts(title, date,content) VALUES (?,?,?)", (title, date, content))
+    cur.execute("INSERT INTO posts(title, date, content, preview) VALUES (?,?,?,?)", (title, date, content, preview))
     con.commit()
 
     print(f"The image folder should be called:\n{img_folder}")
