@@ -1,7 +1,7 @@
 * {
     background-color:#21201b;
     color: white;
-    font-family:  "Source Code Pro", "Monaco", monospace;
+    font-family: Helvetica, sans-serif;
 }
 .title {
      width:70%;
@@ -49,7 +49,10 @@
     width: 95%;
     max-width: 750px;
     margin: auto;
-    font-size: 17px;
+    font-size: 19px;
+}
+.blog_content > p {
+    line-height: 150%;
 }
 
 .post_link:hover {
