@@ -55,6 +55,10 @@
     line-height: 150%;
 }
 
+h2 > .post_link {
+    text-decoration: none;
+}
+
 .post_link:hover {
     background-color: white;
     color: black;
