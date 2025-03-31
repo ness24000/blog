@@ -15,7 +15,8 @@
 }
 
 .square {
-    width: 80%;
+    width: 95%;
+    max-width: 750px;
     margin: auto;
 }
 
@@ -43,9 +44,10 @@
     }
 }
 
-.paragraph {
+.blog_content {
     clear: both;
-    width: 80%;
+    width: 95%;
+    max-width: 750px;
     margin: auto;
 }
 
