@@ -1,22 +1,9 @@
-import logging
-import sqlite3
-
 import numpy as np
-from flask import Flask, jsonify, redirect, render_template, request
+from flask import jsonify, redirect, render_template, request
 
-from config import Config
-from forms import AddPostForm
-from utils import add_post_to_db
-
-logger = logging.getLogger(__name__)
-logger.addHandler(logging.StreamHandler())
-logger.setLevel("DEBUG")
-
-app = Flask(__name__)
-app.config.from_object(Config)
-
-con = sqlite3.connect("./posts.db", check_same_thread=False)
-cur = con.cursor()
+from app import app, cur, logger
+from app.forms import AddPostForm
+from app.utils import add_post_to_db
 
 
 @app.route("/")
