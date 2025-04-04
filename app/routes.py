@@ -1,9 +1,9 @@
 import numpy as np
 from flask import jsonify, redirect, render_template, request
 
-from app import app, cur, logger
+from app import app, cur, logger, PATH_TO_DB
 from app.forms import AddPostForm
-from app.utils import add_post_to_db
+from app.posts_management import add_post_to_db
 
 
 @app.route("/")
@@ -32,7 +32,7 @@ def add_post():
             form.title.data,
             form.date.data,
             form.content.data,
-            "posts.db",
+            PATH_TO_DB,
         )
 
         return redirect("/")
