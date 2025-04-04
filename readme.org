@@ -6,21 +6,11 @@ be found here [[https://medium.com/@noransaber685/building-a-flask-blog-a-step-b
 * Today
  - [X] Fix preview
  - [ ] Add method to add new posts from the site
-   - Use of html forms
    - Add some security (look how this is done)
  - [ ] Start writing an entry
    
 * Long-term goals
-- [ ] The preview can be from the first <div> until the next
-  </div>. That way I ensure that I have a fully self-contained and
-  working html. 
 - [ ] A search function.
-- [ ] A comfortable method to add new posts. The [[https://medium.com/@noransaber685/building-a-flask-blog-a-step-by-step-guide-for-beginners-8bffe925cd0e][tutorial]] creates a
-  route (i.e. url) where one can only access with a certain token and
-  then develops a front-end for adding new articles. I don't really
-  want this since I much rather edit my article here in emacs. I would
-  like a function (or some automation) that quickly converts a txt/org
-  file into an entry in my csv file of posts.
 
 Inspiration:
 https://linuxize.com/
