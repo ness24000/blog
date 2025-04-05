@@ -1,9 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
+from wtforms import StringField, TextAreaField, validators
 
 
 class AddPostForm(FlaskForm):
-    title = StringField("Title")
+    title = StringField("Title", [validators.input_required()])
     date = StringField("Date")
-    content = StringField("Content")
-    
+    content = TextAreaField("Content", [validators.input_required()])

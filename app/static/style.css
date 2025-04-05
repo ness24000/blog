@@ -70,3 +70,14 @@ img {
     display: block;
     margin: auto;
 }
+
+.add_post_form {
+    text-align: center;
+}
+
+.add_post_form textarea {
+    height: 200px;
+    width: 80%;
+    max-width: 850px;
+    margin: auto;   
+}
