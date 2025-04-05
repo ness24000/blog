@@ -1,5 +1,6 @@
 import numpy as np
 from flask import jsonify, redirect, render_template, request
+from werkzeug.security import check_password_hash
 
 from app import app, cur, logger
 from app.forms import AddPostForm
@@ -26,6 +27,11 @@ def post(post_id):
 @app.route("/add_post", methods=["GET", "POST"])
 def add_post():
     form = AddPostForm()
+
+    if request.method == "POST":
+        if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
+            return render_template("add_post.html", form=form)
+
     if form.validate_on_submit():
         logger.debug(f"Adding post with title {form.title.data}")
         add_post_to_db(
