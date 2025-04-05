@@ -5,12 +5,9 @@
 
 <form class="add_post_form" method="post">
   {{ form.hidden_tag() }}
-  <p> {{ form.title.label }}</p>
-  <p> {{ form.title() }}</p>
-  <p> {{ form.date.label }}</p>
-  <p> {{ form.date() }}</p>
-  <p> {{ form.content.label }}</p>
-  <p> {{ form.content() }}</p>
+  <p> {{ form.title(placeholder="title")}}</p>
+  <p> {{ form.date(placeholder="date") }}</p>
+  <p> {{ form.content(placeholder="content") }}</p>
   <input type="submit" value="Add post">
 
 </form>

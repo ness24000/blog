@@ -35,15 +35,6 @@
     color: black;
 }
 
-@media only screen and (max-width: 500px) {
-    .square_small {
-	width: 100%;
-    }
-    .title {
-	font-size: 35px;
-    }
-}
-
 .blog_content {
     clear: both;
     width: 80%;
@@ -75,9 +66,43 @@ img {
     text-align: center;
 }
 
+.add_post_form input {
+    width: 80%;
+    max-width: 850px;
+    border: 2px solid white;
+    padding: 7px;
+    color: white;
+    font-size: 21px ;
+}
+
+.add_post_form input[type=submit]:hover {
+    background-color: white;
+    color: black;    
+}
+
 .add_post_form textarea {
     height: 200px;
     width: 80%;
     max-width: 850px;
-    margin: auto;   
+    border: 2px solid white;
+    padding: 7px;
+    color: white;
+    font-size: 21px ;
+}
+
+@media only screen and (max-width: 500px) {
+    .square_small {
+	width: 100%;
+    }
+    .title {
+	font-size: 35px;
+    }
+
+    .add_post_form input {
+	width: 95%;
+    }
+
+    .add_post_form textarea {
+	width: 95%;
+    }
 }
