@@ -5,6 +5,8 @@ import sqlite3
 
 import markdown
 
+from app.utils import get_date
+
 
 def initialize_db(path_to_db: str):
 
@@ -27,7 +29,9 @@ def connect_to_db(path_to_db: str):
     return con.cursor()
 
 
-def add_post_to_db(title: str, date: str, content: str, path_to_db: str):
+def add_post_to_db(title: str, content: str, path_to_db: str):
+
+    date = get_date()
 
     IMG_PATTERN = r"!\[.*\]\("
     img_folder = title.lower().replace(" ", "_")
