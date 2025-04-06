@@ -12,7 +12,7 @@ app.config.from_object(Config)
 logger = get_logger(__name__, app.config["LOG_LEVEL"])
 
 
-nitialize_db(app.config["PATH_TO_DB"])
+initialize_db(app.config["PATH_TO_DB"])
 cur = connect_to_db(app.config["PATH_TO_DB"])
 
 
