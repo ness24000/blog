@@ -3,8 +3,9 @@ from flask import jsonify, redirect, render_template, request
 from werkzeug.security import check_password_hash
 
 from app import app, cur, logger
-from app.forms import AddPostForm
 from app.db_interface import add_post_to_db
+from app.forms import AddPostForm
+from app.input_processing import format_post_input
 
 
 @app.route("/")
@@ -34,10 +35,15 @@ def add_post():
 
     if form.validate_on_submit():
         logger.debug(f"Adding post with title {form.title.data}")
+
+        title, date, preview, content = format_post_input(
+            form.title.data, form.preview.data, form.content.data
+        )
         add_post_to_db(
-            form.title.data,
-            form.preview.data,
-            form.content.data,
+            title,
+            date,
+            preview,
+            content,
             app.config["PATH_TO_DB"],
         )
 

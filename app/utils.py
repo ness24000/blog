@@ -1,5 +1,4 @@
 import logging
-from datetime import date
 
 
 def get_logger(name: str, log_level: str = "WARNING"):
@@ -14,7 +13,3 @@ def get_logger(name: str, log_level: str = "WARNING"):
     logger.addHandler(stream_handler)
 
     return logger
-
-
-def get_date():
-    return date.today().strftime("%d %B %Y")
