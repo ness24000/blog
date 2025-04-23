@@ -15,7 +15,7 @@ def initialize_db(path_to_db: str):
 
     sql_create_posts = """CREATE TABLE IF NOT EXISTS posts (
        id INTEGER PRIMARY KEY NOT NULL,
-       title VARCHAR NOT NULL,
+       title VARCHAR NOT NULL UNIQUE,
        date VARCHAR NOT NULL,
        content VARCHAR NOT NULL,
        preview VARCHAR NOT NULL);"""
@@ -27,7 +27,6 @@ def initialize_db(path_to_db: str):
 def connect_to_db(path_to_db: str):
     con = sqlite3.connect(path_to_db, check_same_thread=False)
     return con.cursor()
-
 
 def add_post_to_db(title: str, preview: str, content: str, path_to_db: str):
 
@@ -58,3 +57,6 @@ def add_post_to_db(title: str, preview: str, content: str, path_to_db: str):
         (title, date, content, preview),
     )
     con.commit()
+
+def update_post(title: str, preview: str, content: str, path_to_db: str):
+    pass

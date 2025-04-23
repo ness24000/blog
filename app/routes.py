@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash
 
 from app import app, cur, logger
 from app.forms import AddPostForm
-from app.posts_management import add_post_to_db
+from app.db_interface import add_post_to_db
 
 
 @app.route("/")

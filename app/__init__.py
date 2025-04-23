@@ -3,7 +3,7 @@ import os
 from config import Config
 from flask import Flask
 
-from app.posts_management import connect_to_db, initialize_db
+from app.db_interface import connect_to_db, initialize_db
 from app.utils import get_logger
 
 app = Flask(__name__)
