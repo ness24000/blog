@@ -35,3 +35,17 @@ def add_post_to_db(title: str, date: str, preview: str, content: str, path_to_db
         (title, date, content, preview),
     )
     con.commit()
+
+
+def update_post_in_db(
+    post_id: int, title: str, date: str, preview: str, content: str, path_to_db: str
+):
+    con = sqlite3.connect(path_to_db)
+    cur = con.cursor()
+
+    cur.execute(
+        "UPDATE posts SET (title, date, preview, content) = (?,?,?,?) where id = ?",
+        (title, date, content, preview, post_id),
+    )
+
+    con.commit()
