@@ -36,6 +36,7 @@ def add_post():
         logger.debug(f"Adding post with title {form.title.data}")
         add_post_to_db(
             form.title.data,
+            form.preview.data,
             form.content.data,
             app.config["PATH_TO_DB"],
         )

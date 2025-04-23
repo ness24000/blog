@@ -29,7 +29,7 @@ def connect_to_db(path_to_db: str):
     return con.cursor()
 
 
-def add_post_to_db(title: str, content: str, path_to_db: str):
+def add_post_to_db(title: str, preview: str, content: str, path_to_db: str):
 
     date = get_date()
 
@@ -43,7 +43,12 @@ def add_post_to_db(title: str, content: str, path_to_db: str):
 
     content = markdown.markdown(content)
 
-    preview = re.findall("<p>.*?</p>", content, flags=re.DOTALL)[0]
+    if preview == '':
+
+        # if no preview provided, use content's first paragraph
+        preview = re.findall("<p>.*?</p>", content, flags=re.DOTALL)[0]
+    else:
+        preview = markdown.markdown(preview)
 
     con = sqlite3.connect(path_to_db)
     cur = con.cursor()
