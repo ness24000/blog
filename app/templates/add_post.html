@@ -3,14 +3,19 @@
 
 {% block content %}
 
+{% set submit_label = 'Add post' %}
+
+{% if update %}
+ {% set submit_label = 'Update post' %}
+{% endif %}
+
 <form class="add_post_form" method="post">
   {{ form.hidden_tag() }}
   <p> {{ form.title(placeholder="title")}}</p>
   <p> {{ form.preview(placeholder="preview") }}</p>
   <p> {{ form.content(placeholder="content") }}</p>
   <p> {{ form.admin_key(placeholder="admin key") }}</p>
-  <input type="submit" value="Add post">
-
+  <input type="submit" value= "{{submit_label}}" >
 </form>
 
 {% endblock %}
