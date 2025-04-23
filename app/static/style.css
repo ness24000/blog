@@ -95,7 +95,7 @@ img {
 
 .add_post_form #preview {
     height: 40px;
-
+}
 @media only screen and (max-width: 500px) {
     .square_small {
 	width: 100%;
