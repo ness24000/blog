@@ -5,4 +5,4 @@ class Config:
     SECRET_KEY = os.getenv("SECRET_KEY") or "my_secret_key"
     LOG_LEVEL = os.getenv("LOG_LEVEL") or "DEBUG"
     PATH_TO_DB = os.getenv("PATH_TO_DB") or "./posts.db"
-    ADMIN_KEY_HASH = "scrypt:32768:8:1$jtIxkfcvMktwW3br$4280458f91fa3c0164f2d07eb9582f96e17e4a21de2f6c8f41d91ab06cea7d3a541281c15391f21517bed6b515f7fc97c9e26fccbd4add4a47c7ee18e25fd1b8"
+    ADMIN_KEY_HASH = "scrypt:32768:8:1$fsh0zPgobLvU1C57$da6ee34835fc8fc1ffd0538c1ab9cd0062a7b4eb49980a54e1d593c453b3955f95c176ba124551aac2bc10e6410390589fa5e7a522dea0057f098bb3d53247fd"
