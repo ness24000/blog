@@ -6,6 +6,7 @@
 <form class="add_post_form" method="post">
   {{ form.hidden_tag() }}
   <p> {{ form.title(placeholder="title")}}</p>
+  <p> {{ form.preview(placeholder="preview") }}</p>
   <p> {{ form.content(placeholder="content") }}</p>
   <p> {{ form.admin_key(placeholder="admin key") }}</p>
   <input type="submit" value="Add post">

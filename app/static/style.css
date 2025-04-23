@@ -81,7 +81,6 @@ img {
 }
 
 .add_post_form textarea {
-    height: 200px;
     width: 80%;
     max-width: 850px;
     border: 2px solid white;
@@ -89,6 +88,13 @@ img {
     color: white;
     font-size: 21px ;
 }
+
+.add_post_form #content {
+    height: 200px;
+}
+
+.add_post_form #preview {
+    height: 40px;
 
 @media only screen and (max-width: 500px) {
     .square_small {
