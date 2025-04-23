@@ -18,6 +18,7 @@
     width: 95%;
     max-width: 850px;
     margin: auto;
+    clear: both;
 }
 
 .square_small {
@@ -28,6 +29,23 @@
     font-size: 20px;
     text-decoration: none;
     align-content: center;
+}
+
+.square_edit_posts_title {
+    width: 79%;
+    float: left;
+    text-align: center;
+    text-align: left;
+    font-size: 20px;
+    text-decoration: none;
+}
+.square_edit_posts_button {
+    width: 20%;
+    float: left;
+    text-align: center;
+    text-align: right;
+    font-size: 20px;
+    text-decoration: none;
 }
 
 .square_small:hover {

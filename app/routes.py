@@ -93,3 +93,8 @@ def edit_post(post_id):
 
     return render_template("add_post.html", form=form, update=True)
 
+
+@app.route("/edit_post/")
+def list_posts_edit():
+    posts = np.flip(cur.execute("SELECT id, title FROM posts").fetchall(), axis=0)
+    return render_template("list_posts.html", posts=posts)

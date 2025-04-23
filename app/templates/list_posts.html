@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %} Main page {% endblock %}
+
+{% block content %}
+
+{% for post in posts %}
+
+<div class="square">
+  <div class="square_edit_posts_title">
+    <p>  {{ post[1] }} </p>
+  </div>
+
+  <div class="square_edit_posts_button" style = "text-align: right;">
+    <a href="/edit_post/{{post[0] }}">
+      Edit </a>
+  </div>
+</div>
+
+{% endfor %}
+
+{% endblock %}
