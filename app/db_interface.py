@@ -41,8 +41,8 @@ def add_post_to_db(
     cur = con.cursor()
 
     cur.execute(
-        "INSERT INTO posts(title, date, content_md, preview_md, preview_html, content_html) VALUES (?,?,?,?,?,?)",
-        (title, date, content_md, preview_md, preview_html, content_html),
+        "INSERT INTO posts(title, date, preview_md, content_md, preview_html, content_html) VALUES (?,?,?,?,?,?)",
+        (title, date, preview_md, content_md, preview_html, content_html),
     )
     con.commit()
 
@@ -62,7 +62,7 @@ def update_post_in_db(
 
     cur.execute(
         "UPDATE posts SET (title, date, preview_md, content_md, preview_html, content_html) = (?,?,?,?,?,?) where id = ?",
-        (title, date, content_md, preview_md, preview_html, content_html, post_id),
+        (title, date, preview_md, content_md, preview_html, content_html, post_id),
     )
 
     con.commit()
