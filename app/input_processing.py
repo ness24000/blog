@@ -17,15 +17,15 @@ def format_post_input(title: str, preview: str, content: str):
     def produce_image_path(matchobj, img_folder=img_folder):
         return matchobj.group(0) + f"../static/{img_folder}/"
 
-    content = re.sub(IMG_PATTERN, produce_image_path, content)
+    content_html = re.sub(IMG_PATTERN, produce_image_path, content)
 
-    content = markdown.markdown(content)
+    content_html = markdown.markdown(content_html)
 
     if preview == "":
 
         # if no preview provided, use content's first paragraph
-        preview = re.findall("<p>.*?</p>", content, flags=re.DOTALL)[0]
+        preview_html = re.findall("<p>.*?</p>", content_html, flags=re.DOTALL)[0]
     else:
-        preview = markdown.markdown(preview)
+        preview_html = markdown.markdown(preview)
 
-    return title, date, preview, content
+    return title, date, preview, content, preview_html, content_html

@@ -10,7 +10,10 @@ from app.input_processing import format_post_input
 
 @app.route("/")
 def index():
-    posts = np.flip(cur.execute("SELECT * FROM posts").fetchall(), axis=0)
+    posts = np.flip(
+        cur.execute("SELECT id, title, date, preview_html FROM posts").fetchall(),
+        axis=0,
+    )
     return render_template("index.html", posts=posts)
 
 
@@ -21,7 +24,9 @@ def about():
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
-    post = cur.execute("SELECT * FROM posts WHERE id = ?", [post_id]).fetchone()
+    post = cur.execute(
+        "SELECT title, date, content_html FROM posts WHERE id = ?", [post_id]
+    ).fetchone()
     return render_template("post.html", post=post)
 
 
@@ -36,14 +41,16 @@ def add_post():
     if form.validate_on_submit():
         logger.debug(f"Adding post with title {form.title.data}")
 
-        title, date, preview, content = format_post_input(
-            form.title.data, form.preview.data, form.content.data
+        title, date, preview_md, content_md, preview_html, content_html = (
+            format_post_input(form.title.data, form.preview.data, form.content.data)
         )
         add_post_to_db(
             title,
             date,
-            preview,
-            content,
+            preview_md,
+            content_md,
+            preview_html,
+            content_html,
             app.config["PATH_TO_DB"],
         )
 

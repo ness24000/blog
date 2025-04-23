@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title> {{ post[1] }} </title>
+  <title> {{ post[0] }} </title>
   <meta name="viewport" content="width:device-width,initial-scale=1.0" />
   <link rel="stylesheet" href="{{
 				 url_for('static',filename='style.css') }}">
@@ -20,9 +20,9 @@
 
 <body>
   <div class="blog_content">
-    <h1 style="text-align:center;"> {{ post[1] }} </h1>
-    <p style="text-align:center;"> {{ post[2] }} </p>
-    {{ post[3]|safe }}
+    <h1 style="text-align:center;"> {{ post[0] }} </h1>
+    <p style="text-align:center;"> {{ post[1] }} </p>
+    {{ post[2]|safe }}
   </div>
 </body>
 
