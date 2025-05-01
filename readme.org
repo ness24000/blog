@@ -13,6 +13,7 @@ be found here [[https://medium.com/@noransaber685/building-a-flask-blog-a-step-b
 - [ ] A search function.
 
 Inspiration:
+https://codahale.com/you-cant-sacrifice-partition-tolerance/ <- this guy literally did the blog I wanted to do xd. In 2009, maybe I am outdated. 
 https://linuxize.com/
   
 
