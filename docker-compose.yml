@@ -6,5 +6,5 @@ services:
     volumes:
       - ./app:/app/app
       - ./data:/app/data
-    entrypoint: ["flask","run","--host", "0.0.0.0", "--port","8080"]
+    entrypoint: ["gunicorn", "-b", "0.0.0.0:8080", "blog_app:app"]
     
