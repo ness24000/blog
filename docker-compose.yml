@@ -1,10 +1,16 @@
 services:
   app:
     build: .
-    ports:
-      - 8080:8080
     volumes:
       - ./app:/app/app
       - ./data:/app/data
     entrypoint: ["gunicorn", "-b", "0.0.0.0:8080", "blog_app:app"]
+
+  reverse_proxy:
+    build: ./nginx
+    volumes:
+      - ./nginx/certs:/certs
+    ports:
+      - 80:80
+      - 443:443
     
