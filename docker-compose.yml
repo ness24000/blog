@@ -5,14 +5,12 @@ services:
       - ./app:/app/app
       - ./data:/app/data
     environment:
-      ADMIN_KEY: "set_your_own_very_long_password"
+      ADMIN_KEY: "$22_Aragon_22$"
     entrypoint: ["gunicorn", "-b", "0.0.0.0:8080", "blog_app:app"]
 
   reverse_proxy:
     build: ./nginx
-    volumes:
-      - ./nginx/certs:/certs
     ports:
       - 80:80
       - 443:443
-    
+    entrypoint: ["bash", '/enable_https.sh']
