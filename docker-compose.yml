@@ -1,18 +1,12 @@
 services:
   app:
     build: .
+    ports:
+      - 8080:8080
     volumes:
       - ./app:/app/app
       - ./data:/app/data
     environment:
       ADMIN_KEY: "set_your_own_very_long_password"
     entrypoint: ["gunicorn", "-b", "0.0.0.0:8080", "blog_app:app"]
-
-  reverse_proxy:
-    build: ./nginx
-    volumes:
-      - ./nginx/certs:/certs
-    ports:
-      - 80:80
-      - 443:443
     
