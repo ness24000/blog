@@ -6,7 +6,7 @@ from app import app, cur, logger
 from app.db_interface import add_post_to_db, update_post_in_db
 from app.forms import AddPostForm
 from app.input_processing import format_post_input
-
+from app.limiter import limiter 
 
 @app.route("/")
 def index():
@@ -31,6 +31,7 @@ def post(post_id):
 
 
 @app.route("/add_post", methods=["GET", "POST"])
+@limiter.limit("5 per minute")
 def add_post():
     form = AddPostForm()
 
@@ -60,6 +61,7 @@ def add_post():
 
 
 @app.route("/edit_post/<int:post_id>", methods=["GET", "POST"])
+@limiter.limit("5 per minute")
 def edit_post(post_id):
 
     form = AddPostForm()
