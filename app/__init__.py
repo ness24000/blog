@@ -22,5 +22,6 @@ cur = connect_to_db(app.config["PATH_TO_DB"])
 
 
 from app import routes
+from app import errorhandlers
 
 logger.debug(f"Blog initialization finished")
