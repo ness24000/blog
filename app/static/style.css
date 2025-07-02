@@ -64,7 +64,7 @@
     line-height: 150%;
 }
 
-h2 > .post_link {
+h3 > .post_link {
     text-decoration: none;
 }
 
@@ -113,6 +113,22 @@ img {
 
 .add_post_form #preview {
     height: 40px;
+}
+
+table {
+    border-collapse: collapse;  
+}
+
+th, td {
+    padding: 10px;
+}
+
+td {
+    border-bottom: 1px solid;
+}
+th {
+    
+    border-bottom: 2px solid;
 }
 @media only screen and (max-width: 500px) {
     .square_small {
