@@ -19,7 +19,7 @@ def format_post_input(title: str, preview: str, content: str):
 
     content_html = re.sub(IMG_PATTERN, produce_image_path, content)
 
-    content_html = markdown.markdown(content_html)
+    content_html = markdown.markdown(content_html, extenstions = ['tables'])
 
     if preview == "":
 
