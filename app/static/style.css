@@ -1,17 +1,18 @@
 * {
-    background-color:#21201b;
+    background-color: #21201b;
     color: white;
     font-family: Helvetica, sans-serif;
 }
+
 .title {
-     width:70%;
-     margin:auto;
-     text-align: center;
-     font-size: 50px;
+    width: 70%;
+    margin: auto;
+    text-align: center;
+    font-size: 50px;
 }
 
-.title_link{
-    text-decoration:none;
+.title_link {
+    text-decoration: none;
 }
 
 .square {
@@ -39,6 +40,7 @@
     font-size: 20px;
     text-decoration: none;
 }
+
 .square_edit_posts_button {
     width: 20%;
     float: left;
@@ -60,11 +62,20 @@
     margin: auto;
     font-size: 21px;
 }
-.blog_content > p {
+
+.blog_content>p {
     line-height: 150%;
 }
 
-h3 > .post_link {
+.blog_content>h1 {
+    text-align: center;
+}
+
+#post_date {
+        text-align: center;
+    }
+
+h3>.post_link {
     text-decoration: none;
 }
 
@@ -90,12 +101,12 @@ img {
     border: 2px solid white;
     padding: 7px;
     color: white;
-    font-size: 21px ;
+    font-size: 21px;
 }
 
 .add_post_form input[type=submit]:hover {
     background-color: white;
-    color: black;    
+    color: black;
 }
 
 .add_post_form textarea {
@@ -104,7 +115,7 @@ img {
     border: 2px solid white;
     padding: 7px;
     color: white;
-    font-size: 21px ;
+    font-size: 21px;
 }
 
 .add_post_form #content {
@@ -116,33 +127,53 @@ img {
 }
 
 table {
-    border-collapse: collapse;  
+    border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
     padding: 10px;
 }
 
 td {
     border-bottom: 1px solid;
 }
+
 th {
-    
+
     border-bottom: 2px solid;
 }
+
 @media only screen and (max-width: 500px) {
-    .square_small {
-	width: 100%;
-    }
+
     .title {
-	font-size: 35px;
+        font-size: 35px;
+    }
+
+    .blog_content>h1 {
+        text-align: left;
+    }
+
+    #post_date {
+        text-align: left;
+        margin-top: 0px;
+        margin-bottom: 50px;
     }
 
     .add_post_form input {
-	width: 95%;
+        width: 95%;
     }
 
     .add_post_form textarea {
-	width: 95%;
+        width: 95%;
+    }
+
+    .blog_content {
+        width: 97%;
+        font-size: 19.5px;
+    }
+
+    .blog_content>p {
+        line-height: 130%;
     }
 }
