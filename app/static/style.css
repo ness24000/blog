@@ -147,6 +147,9 @@ img {
 }
 
 table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
     border-collapse: collapse;
 }
 
