@@ -55,6 +55,30 @@
     color: black;
 }
 
+.preview_link_wrapper {
+    text-decoration: none;
+}
+
+.preview>h3{
+    margin-bottom: 0;
+    display: inline;
+}
+
+.preview:hover>h3{
+    background-color: white;
+    color:black;
+}
+
+.preview>.date{
+    margin-top: 5px;
+    margin-bottom: 12px;
+    font-size: 19px;
+}
+.preview>p {
+    margin-top:0;
+    margin-bottom: 40px;
+}
+
 .blog_content {
     clear: both;
     width: 80%;
@@ -72,11 +96,7 @@
 }
 
 #post_date {
-        text-align: center;
-    }
-
-h3>.post_link {
-    text-decoration: none;
+    text-align: center;
 }
 
 .post_link:hover {

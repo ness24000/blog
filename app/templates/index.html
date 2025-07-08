@@ -5,13 +5,13 @@
 
 {% for post in posts %}
 
-<h3 style="margin-bottom: 0;"> <a class="post_link" href="/post/{{ post[0] }}"> {{ post[1] }} </a> </h3>
-<p style="margin-top: 5px;"> {{ post[2] }} </p>
-<p>{{ post[3]|safe }}
- <a class="post_link" href="/post/{{ post[0] }}"> read more</a>
-</p> 
-
-<div style="height:10px;"></div>
+<a class="preview_link_wrapper" href="/post/{{ post[0] }}">
+    <div class="preview">
+        <h3> {{ post[1] }} </h3>
+        <p class="date"> {{ post[2] }} </p>
+        {{ post[3]|safe }}
+    </div>
+</a>
 {% endfor %}
 
 {% endblock %}
