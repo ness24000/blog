@@ -65,6 +65,10 @@ def add_post():
 def edit_post(post_id):
 
     form = AddPostForm()
+    
+    if request.method == "POST":
+        if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
+            return render_template("add_post.html", form=form)
 
     # POST: format input run as in add post, use app.db_interface.update_post_in_db
     if form.validate_on_submit():
