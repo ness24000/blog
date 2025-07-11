@@ -35,8 +35,7 @@
 .square_edit_posts_title {
     width: 79%;
     float: left;
-    text-align: center;
-    text-align: left;
+    margin-bottom: 10px;
     font-size: 20px;
     text-decoration: none;
 }
@@ -44,8 +43,7 @@
 .square_edit_posts_button {
     width: 20%;
     float: left;
-    text-align: center;
-    text-align: right;
+    margin-bottom: 10px;
     font-size: 20px;
     text-decoration: none;
 }
