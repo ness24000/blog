@@ -1,4 +1,9 @@
 import logging
+from datetime import date
+
+
+def get_date():
+    return date.today().strftime("%d %B %Y")
 
 
 def get_logger(name: str, log_level: str = "WARNING"):

@@ -1,15 +1,8 @@
 import re
-from datetime import date
 
 import markdown
 
-
-def get_date():
-    return date.today().strftime("%d %B %Y")
-
-
 def format_post_input(title: str, preview: str, content: str):
-    date = get_date()
 
     IMG_PATTERN = r"!\[.*\]\("
     img_folder = title.lower().replace(" ", "_")
@@ -28,4 +21,4 @@ def format_post_input(title: str, preview: str, content: str):
     else:
         preview_html = markdown.markdown(preview)
 
-    return title, date, preview, content, preview_html, content_html
+    return title, preview, content, preview_html, content_html

@@ -6,7 +6,9 @@ from app import app, cur, logger
 from app.db_interface import add_post_to_db, update_post_in_db
 from app.forms import AddPostForm
 from app.input_processing import format_post_input
-from app.limiter import limiter 
+from app.limiter import limiter
+from app.utils import get_date
+
 
 @app.route("/")
 def index():
@@ -42,9 +44,11 @@ def add_post():
     if form.validate_on_submit():
         logger.debug(f"Adding post with title {form.title.data}")
 
-        title, date, preview_md, content_md, preview_html, content_html = (
-            format_post_input(form.title.data, form.preview.data, form.content.data)
+        title, preview_md, content_md, preview_html, content_html = format_post_input(
+            form.title.data, form.preview.data, form.content.data
         )
+        date = get_date()
+
         add_post_to_db(
             title,
             date,
@@ -65,7 +69,7 @@ def add_post():
 def edit_post(post_id):
 
     form = AddPostForm()
-    
+
     if request.method == "POST":
         if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
             return render_template("add_post.html", form=form)
@@ -74,13 +78,12 @@ def edit_post(post_id):
     if form.validate_on_submit():
         logger.debug(f"Updating post {post_id}  with new title {form.title.data}")
 
-        title, date, preview_md, content_md, preview_html, content_html = (
+        title, preview_md, content_md, preview_html, content_html = (
             format_post_input(form.title.data, form.preview.data, form.content.data)
         )
         update_post_in_db(
             post_id,
             title,
-            date,
             preview_md,
             content_md,
             preview_html,
