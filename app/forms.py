@@ -7,3 +7,6 @@ class AddPostForm(FlaskForm):
     content = TextAreaField("Content", [validators.input_required()])
     preview = TextAreaField("Preview")
     admin_key = PasswordField("Admin Key", [validators.input_required()])
+
+class DeletePostForm(FlaskForm):
+    admin_key = PasswordField("Admin Key", [validators.input_required()])

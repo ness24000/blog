@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %} Add post{% endblock %}
+
+{% block content %}
+
+<form class="add_post_form" method="post">
+  {{ form.hidden_tag() }}
+  <p> {{ form.admin_key(placeholder="admin key") }}</p>
+  <input type="submit" value="Delete post">
+</form>
+
+{% endblock %}

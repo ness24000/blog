@@ -3,8 +3,8 @@ from flask import jsonify, redirect, render_template, request
 from werkzeug.security import check_password_hash
 
 from app import app, cur, logger
-from app.db_interface import add_post_to_db, update_post_in_db
-from app.forms import AddPostForm
+from app.db_interface import add_post_to_db, update_post_in_db, delete_post_in_db
+from app.forms import AddPostForm, DeletePostForm
 from app.input_processing import format_post_input
 from app.limiter import limiter
 from app.utils import get_date
@@ -101,6 +101,26 @@ def edit_post(post_id):
     form = AddPostForm(title=title, date=date, content=content_md, preview=preview_md)
 
     return render_template("add_post.html", form=form, update=True)
+
+@app.route("/delete_post/<int:post_id>", methods=["GET", "POST"])
+@limiter.limit("5 per minute")
+def delete_post(post_id):
+
+    form = DeletePostForm()
+
+    if request.method == "POST":
+        if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
+            return render_template("delete_post.html", form=form)
+
+    # POST: format input run as in add post, use app.db_interface.update_post_in_db
+    if form.validate_on_submit():
+        logger.debug(f"Deleting post {post_id}")       
+        delete_post_in_db(post_id,app.config["PATH_TO_DB"])
+
+        return redirect("/")
+
+    # GET: return form to include password
+    return render_template("delete_post.html", form=form)
 
 
 @app.route("/edit_post/")

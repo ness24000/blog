@@ -65,3 +65,12 @@ def update_post_in_db(
     )
 
     con.commit()
+
+
+def delete_post_in_db(post_id: int, path_to_db: str):
+    con = sqlite3.connect(path_to_db)
+    cur = con.cursor()
+    cur.execute("delete from posts where id = ?;", (post_id,))
+
+    con.commit()
+    pass
