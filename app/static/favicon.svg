@@ -14,7 +14,7 @@
   <g
      id="layer1">
     <rect
-       style="fill:#666666;stroke-width:0.264583"
+       style="display:none;fill:#666666;stroke-width:0.264583"
        id="rect3"
        width="209.99763"
        height="194.71861"
@@ -22,12 +22,12 @@
        y="0" />
     <text
        xml:space="preserve"
-       style="font-size:158.75px;line-height:0;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f9f9f9;stroke-width:0.264583"
+       style="font-size:158.75px;line-height:0;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#b3b3b3;stroke-width:0.264583"
        x="9.3531351"
        y="141.63248"
        id="text3"><tspan
          id="tspan3"
-         style="font-size:158.75px;line-height:0;fill:#f9f9f9;stroke-width:0.264583"
+         style="font-size:158.75px;line-height:0;fill:#b3b3b3;stroke-width:0.264583"
          x="9.3531351"
          y="141.63248">(o)</tspan></text>
   </g>
