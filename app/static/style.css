@@ -1,6 +1,12 @@
+html {
+    color-scheme: light dark;
+    --background: light-dark(white, #21201b);
+    --text: light-dark(black, white);
+}
+
 * {
-    background-color: #21201b;
-    color: white;
+    background-color: var(--background);
+    color: var(--text);
     font-family: Helvetica, sans-serif;
 }
 
@@ -49,35 +55,37 @@
 }
 
 .square_small:hover {
-    background-color: white;
-    color: black;
+    background-color: var(--text);
+    color: var(--background);
 }
 
 .preview_link_wrapper {
     text-decoration: none;
 }
 
-.preview>h3{
+.preview>h3 {
     margin-bottom: 0;
     display: inline;
 }
 
-.preview:hover>h3{
-    background-color: white;
-    color:black;
+.preview:hover>h3 {
+    background-color: var(--text);
+    color: var(--background)
 }
 
-.preview>.date{
+.preview>.date {
     margin-top: 5px;
     margin-bottom: 12px;
     font-size: 19px;
 }
+
 .preview>p {
-    margin-top:0;
+    margin-top: 0;
     margin-bottom: 40px;
 }
 
 .blog_content {
+    color: var(--text);     
     clear: both;
     width: 80%;
     max-width: 850px;
@@ -98,8 +106,8 @@
 }
 
 p a:hover {
-    background-color: white;
-    color: black;
+    background-color: var(--text);
+    color: var(--background);
 }
 
 img {
@@ -116,23 +124,23 @@ img {
 .add_post_form input {
     width: 80%;
     max-width: 850px;
-    border: 2px solid white;
+    border: 2px solid var(--text);
     padding: 7px;
-    color: white;
+    color: var(--text);
     font-size: 21px;
 }
 
 .add_post_form input[type=submit]:hover {
-    background-color: white;
-    color: black;
+    background-color: var(--text);
+    color: var(--background);
 }
 
 .add_post_form textarea {
     width: 80%;
     max-width: 850px;
-    border: 2px solid white;
+    border: 2px solid var(--text);
     padding: 7px;
-    color: white;
+    color: var(--text);
     font-size: 21px;
 }
 
@@ -146,8 +154,8 @@ img {
 
 blockquote {
     border-left: 5px solid #aaa;
-    background-color: #2a2924;
-    color: #e0e0e0;
+    background-color: light-dark(#f8f8f8,#2a2924);
+    color: var(--text);
     margin: 24px 0;
     padding: 16px 24px;
     font-style: italic;
@@ -155,8 +163,8 @@ blockquote {
 }
 
 /* required since there are <p> and mathjax inside blockquotes */
-blockquote *{
-    background-color: #2a2924;
+blockquote * {
+    background-color: light-dark(#f8f8f8,#2a2924);
 }
 
 table {
