@@ -10,6 +10,7 @@ html {
     font-family: Helvetica, sans-serif;
 }
 
+/* General text and geometry styling */
 .title {
     width: 70%;
     margin: auto;
@@ -110,6 +111,7 @@ p a:hover {
     color: var(--background);
 }
 
+/* Image styling */
 img {
     max-width: 80%;
     max-height: 500px;
@@ -117,6 +119,7 @@ img {
     margin: auto;
 }
 
+/* Administrator side styling */
 .add_post_form {
     text-align: center;
 }
@@ -152,6 +155,7 @@ img {
     height: 40px;
 }
 
+/* Quote styling */
 blockquote {
     border-left: 5px solid #aaa;
     background-color: light-dark(#f8f8f8, #2a2924);
@@ -167,6 +171,21 @@ blockquote * {
     background-color: light-dark(#f8f8f8, #2a2924);
 }
 
+/* List styling */
+ol, ul {
+    margin-left: 15px;
+    list-style-position: inside;
+    
+}
+::marker{
+    font-style: italic;
+}
+
+li {
+    margin-top: 5px;
+}
+
+/* Table styling */
 table {
     margin-left: auto;
     margin-right: auto;
@@ -188,13 +207,14 @@ th {
     border-bottom: 2px solid;
 }
 
-
+/* Mathjax styling */
 mjx-container {
     max-width: 100%;
     overflow-y:hidden;
     overflow-x: auto;
 }
 
+/* Responsiveness */
 @media only screen and (max-width: 500px) {
 
     .title {
@@ -227,5 +247,9 @@ mjx-container {
     .blog_content>p {
         line-height: 130%;
     }
+    ol, ul {
+        margin-left: 0px;
+        padding-left: 0px;
+}
 
 }
