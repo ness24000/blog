@@ -85,7 +85,7 @@ html {
 }
 
 .blog_content {
-    color: var(--text);     
+    color: var(--text);
     clear: both;
     width: 80%;
     max-width: 850px;
@@ -154,7 +154,7 @@ img {
 
 blockquote {
     border-left: 5px solid #aaa;
-    background-color: light-dark(#f8f8f8,#2a2924);
+    background-color: light-dark(#f8f8f8, #2a2924);
     color: var(--text);
     margin: 24px 0;
     padding: 16px 24px;
@@ -164,7 +164,7 @@ blockquote {
 
 /* required since there are <p> and mathjax inside blockquotes */
 blockquote * {
-    background-color: light-dark(#f8f8f8,#2a2924);
+    background-color: light-dark(#f8f8f8, #2a2924);
 }
 
 table {
@@ -186,6 +186,13 @@ td {
 th {
 
     border-bottom: 2px solid;
+}
+
+
+mjx-container {
+    max-width: 100%;
+    overflow-y:hidden;
+    overflow-x: auto;
 }
 
 @media only screen and (max-width: 500px) {
@@ -220,4 +227,5 @@ th {
     .blog_content>p {
         line-height: 130%;
     }
+
 }
