@@ -19,10 +19,23 @@ def index():
     return render_template("index.html", posts=posts)
 
 
-@app.route("/newsletter")
+@app.route("/newsletter", methods=["GET", "POST"])
 def newsletter():
     form = SubscribeToNewsletter()
-    return render_template("newsletter.html", form = form)
+    
+    if form.validate_on_submit():
+        # add non confirmed entry in db
+        # send validation email 
+        # if sending fails, return the template again, with the form saying ooh it failed
+        email_sending_failed = True
+        if email_sending_failed:
+            form = SubscribeToNewsletter()
+            form.email.data = ""  # explicitly clear the field
+            return render_template("newsletter.html", form = form, first_attempt = False)
+        
+        logger.debug(f"{form.email.data} suscribed [not confirmed]")
+        
+    return render_template("newsletter.html", form = form, first_attempt = True)
 
 
 @app.route("/post/<int:post_id>")

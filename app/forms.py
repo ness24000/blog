@@ -15,5 +15,6 @@ class DeletePostForm(FlaskForm):
 
 class SubscribeToNewsletter(FlaskForm):
     email = StringField(
-        "Email Address", [validators.input_required(), validators.Email()]
+        "Email Address",
+        [validators.input_required()],
     )

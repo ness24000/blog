@@ -3,13 +3,20 @@
 {% block title %} Text(o)s' newsletter {% endblock %}
 
 {% block content %}
+
+{% set placeholder = 'The email seems invalid, try again' %}
+
+{% if first_attempt %}
+{% set placeholder = 'Your email' %}
+{% endif %}
+
 <p style="text-align: center;">
-    Do you want to be notified of new texts in text(o)s? 
+    Do you want to be notified of new texts in text(o)s?
 </p>
 
 <form class="add_post_form" method="post">
     {{ form.hidden_tag() }}
-    <p> {{ form.email(placeholder="Your email")}}</p>
+    <p> {{ form.email(placeholder=placeholder)}}</p>
     <input type="submit" value="Subscribe">
 </form>
 
