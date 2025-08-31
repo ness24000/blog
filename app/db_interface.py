@@ -17,8 +17,15 @@ def initialize_db(path_to_db: str):
        preview_md VARCHAR NOT NULL,
        content_html VARCHAR NOT NULL,
        preview_html VARCHAR NOT NULL);"""
-
     cur.executescript(sql_create_posts)
+
+    sql_create_mail = """CREATE TABLE IF NOT EXISTS mail (
+       id INTEGER PRIMARY KEY NOT NULL,
+       date VARCHAR NOT NULL,
+       email_address VARCHAR NOT NULL,
+       confirmed VARCHAR NOT NULL);"""
+    cur.executescript(sql_create_mail)
+
     con.commit()
 
 
