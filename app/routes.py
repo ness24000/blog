@@ -1,6 +1,7 @@
 import numpy as np
 from flask import jsonify, redirect, render_template, request
 from werkzeug.security import check_password_hash
+from email_validator import validate_email, EmailNotValidError
 
 from app import app, cur, logger
 from app.db_interface import add_post_to_db, update_post_in_db, delete_post_in_db
@@ -24,16 +25,27 @@ def newsletter():
     form = SubscribeToNewsletter()
     
     if form.validate_on_submit():
-        # add non confirmed entry in db
-        # send validation email 
-        # if sending fails, return the template again, with the form saying ooh it failed
-        email_sending_failed = True
-        if email_sending_failed:
+
+        try: 
+            emailinfo = validate_email(form.email.data)
+            email = emailinfo.normalized
+        except EmailNotValidError:
             form = SubscribeToNewsletter()
             form.email.data = ""  # explicitly clear the field
             return render_template("newsletter.html", form = form, first_attempt = False)
-        
+
+        # validate email 
+        # send validation email 
+        # if sending fails, return the template again, with the form saying ooh it failed
+
+        # add non confirmed entry in db
+
         logger.debug(f"{form.email.data} suscribed [not confirmed]")
+        return "Valid"
+
+            
+        
+        
         
     return render_template("newsletter.html", form = form, first_attempt = True)
 
