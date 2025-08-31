@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask_mail import Mail
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.db_interface import connect_to_db, initialize_db
@@ -9,6 +10,8 @@ from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+mail = Mail(app)    
 
 # necessary if app behind reverse proxy
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)

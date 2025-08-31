@@ -8,7 +8,7 @@ from app.forms import AddPostForm, DeletePostForm
 from app.input_processing import format_post_input
 from app.limiter import limiter
 from app.utils import get_date
-
+from app.mailing import sending_test_email
 
 @app.route("/")
 def index():
@@ -127,3 +127,8 @@ def delete_post(post_id):
 def list_posts_edit():
     posts = np.flip(cur.execute("SELECT id, title FROM posts").fetchall(), axis=0)
     return render_template("list_posts.html", posts=posts)
+
+@app.route("/send_test_email")
+def send_test_email():
+    response = sending_test_email()
+    return response
