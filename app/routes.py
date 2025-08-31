@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash
 
 from app import app, cur, logger
 from app.db_interface import add_post_to_db, update_post_in_db, delete_post_in_db
-from app.forms import AddPostForm, DeletePostForm
+from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
 from app.input_processing import format_post_input
 from app.limiter import limiter
 from app.utils import get_date
@@ -19,9 +19,10 @@ def index():
     return render_template("index.html", posts=posts)
 
 
-@app.route("/about")
-def about():
-    return render_template("about.html")
+@app.route("/newsletter")
+def newsletter():
+    form = SubscribeToNewsletter()
+    return render_template("newsletter.html", form = form)
 
 
 @app.route("/post/<int:post_id>")
@@ -63,6 +64,10 @@ def add_post():
 
     return render_template("add_post.html", form=form)
 
+@app.route("/edit_post/")
+def list_posts_edit():
+    posts = np.flip(cur.execute("SELECT id, title FROM posts").fetchall(), axis=0)
+    return render_template("list_posts.html", posts=posts)
 
 @app.route("/edit_post/<int:post_id>", methods=["GET", "POST"])
 @limiter.limit("5 per minute")
@@ -121,12 +126,6 @@ def delete_post(post_id):
 
     # GET: return form to include password
     return render_template("delete_post.html", form=form)
-
-
-@app.route("/edit_post/")
-def list_posts_edit():
-    posts = np.flip(cur.execute("SELECT id, title FROM posts").fetchall(), axis=0)
-    return render_template("list_posts.html", posts=posts)
 
 @app.route("/send_test_email")
 def send_test_email():

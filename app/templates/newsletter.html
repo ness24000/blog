@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} Text(o)s' newsletter {% endblock %}
+
+{% block content %}
+<p style="text-align: center;">
+    Do you want to be notified of new texts in text(o)s? 
+</p>
+
+<form class="add_post_form" method="post">
+    {{ form.hidden_tag() }}
+    <p> {{ form.email(placeholder="Your email")}}</p>
+    <input type="submit" value="Subscribe">
+</form>
+
+{% endblock %}

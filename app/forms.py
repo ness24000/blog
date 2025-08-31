@@ -8,5 +8,12 @@ class AddPostForm(FlaskForm):
     preview = TextAreaField("Preview")
     admin_key = PasswordField("Admin Key", [validators.input_required()])
 
+
 class DeletePostForm(FlaskForm):
     admin_key = PasswordField("Admin Key", [validators.input_required()])
+
+
+class SubscribeToNewsletter(FlaskForm):
+    email = StringField(
+        "Email Address", [validators.input_required(), validators.Email()]
+    )
