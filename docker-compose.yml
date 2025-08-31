@@ -7,8 +7,13 @@ services:
       - ./app:/app/app
       - ./data:/app/data
     environment:
-      ADMIN_KEY: ${ADMIN_KEY}
-      PATH_TO_DB: ${PATH_TO_DB}
       LOG_LEVEL: ${LOG_LEVEL}
+      PATH_TO_DB: ${PATH_TO_DB}
+      ADMIN_KEY: ${ADMIN_KEY}
+      MAIL_SERVER: ${MAIL_SERVER}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAILTRAP_API_KEY: ${MAILTRAP_API_KEY}
+      
     entrypoint: ["gunicorn", "-b", "0.0.0.0:8080", "blog_app:app"]
     

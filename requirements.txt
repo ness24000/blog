@@ -5,3 +5,4 @@ markdown
 flask-wtf==1.2.2
 gunicorn
 flask_limiter
+flask_mail
