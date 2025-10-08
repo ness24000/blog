@@ -1,15 +1,23 @@
 import numpy as np
-from flask import jsonify, redirect, render_template, request
+from flask import redirect, render_template, request
 from werkzeug.security import check_password_hash
-from email_validator import validate_email, EmailNotValidError
+
 
 from app import app, cur, logger
-from app.db_interface import add_post_to_db, update_post_in_db, delete_post_in_db
+from app.db_interface import (
+    add_post_to_db,
+    update_post_in_db,
+    delete_post_in_db,
+    check_email_exists_in_db,
+    add_email_to_db
+)
 from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
 from app.input_processing import format_post_input
 from app.limiter import limiter
 from app.utils import get_date
-from app.mailing import sending_test_email
+from app.emailing import send_confirmation_email
+from email_validator import validate_email, EmailNotValidError
+
 
 @app.route("/")
 def index():
@@ -23,31 +31,47 @@ def index():
 @app.route("/newsletter", methods=["GET", "POST"])
 def newsletter():
     form = SubscribeToNewsletter()
-    
+
     if form.validate_on_submit():
 
-        try: 
+        # 1. validate email format
+        try:
             emailinfo = validate_email(form.email.data)
-            email = emailinfo.normalized
+            email_address = emailinfo.normalized
         except EmailNotValidError:
             form = SubscribeToNewsletter()
             form.email.data = ""  # explicitly clear the field
-            return render_template("newsletter.html", form = form, first_attempt = False)
+            placeholder_message = "This email seems invalid, try again"
+            return render_template(
+                "newsletter.html", form=form, placeholder=placeholder_message
+            )
 
-        # validate email 
-        # send validation email 
-        # if sending fails, return the template again, with the form saying ooh it failed
+        # 2. check if email in db
+        if check_email_exists_in_db(email_address, app.config["PATH_TO_DB"]):
+            form = SubscribeToNewsletter()
+            form.email.data = ""
+            placeholder_message = "It seems you are already suscribed!"
+            return render_template(
+                "newsletter.html", form=form, placeholder=placeholder_message
+            )
 
-        # add non confirmed entry in db
+        # 3. try sending
+        email_sent_status = send_confirmation_email(email_address, logger)
 
-        logger.debug(f"{form.email.data} suscribed [not confirmed]")
-        return "Valid"
-
+        if email_sent_status:
+            add_email_to_db(email_address, app.config["PATH_TO_DB"])
             
-        
-        
-        
-    return render_template("newsletter.html", form = form, first_attempt = True)
+            logger.debug(f"{form.email.data} suscribed [not confirmed]")
+            return render_template("confirm_email.html")
+
+        else:
+            logger.debug(f"Error sending email to {form.email.data}, check mailtrap logs")
+            form = SubscribeToNewsletter()
+            form.email.data = ""
+            placeholder_message = "Error processing your suscription, try again later"
+            return render_template("newsletter.html", form = form, placeholder=placeholder_message)
+
+    return render_template("newsletter.html", form=form)
 
 
 @app.route("/post/<int:post_id>")
@@ -67,7 +91,6 @@ def add_post():
         if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
             return render_template("add_post.html", form=form)
 
-    if form.validate_on_submit():
         logger.debug(f"Adding post with title {form.title.data}")
 
         title, preview_md, content_md, preview_html, content_html = format_post_input(
@@ -89,10 +112,12 @@ def add_post():
 
     return render_template("add_post.html", form=form)
 
+
 @app.route("/edit_post/")
 def list_posts_edit():
     posts = np.flip(cur.execute("SELECT id, title FROM posts").fetchall(), axis=0)
     return render_template("list_posts.html", posts=posts)
+
 
 @app.route("/edit_post/<int:post_id>", methods=["GET", "POST"])
 @limiter.limit("5 per minute")
@@ -108,8 +133,8 @@ def edit_post(post_id):
     if form.validate_on_submit():
         logger.debug(f"Updating post {post_id}  with new title {form.title.data}")
 
-        title, preview_md, content_md, preview_html, content_html = (
-            format_post_input(form.title.data, form.preview.data, form.content.data)
+        title, preview_md, content_md, preview_html, content_html = format_post_input(
+            form.title.data, form.preview.data, form.content.data
         )
         update_post_in_db(
             post_id,
@@ -132,6 +157,7 @@ def edit_post(post_id):
 
     return render_template("add_post.html", form=form, update=True)
 
+
 @app.route("/delete_post/<int:post_id>", methods=["GET", "POST"])
 @limiter.limit("5 per minute")
 def delete_post(post_id):
@@ -144,15 +170,10 @@ def delete_post(post_id):
 
     # POST: format input run as in add post, use app.db_interface.update_post_in_db
     if form.validate_on_submit():
-        logger.debug(f"Deleting post {post_id}")       
-        delete_post_in_db(post_id,app.config["PATH_TO_DB"])
+        logger.debug(f"Deleting post {post_id}")
+        delete_post_in_db(post_id, app.config["PATH_TO_DB"])
 
         return redirect("/")
 
     # GET: return form to include password
     return render_template("delete_post.html", form=form)
-
-@app.route("/send_test_email")
-def send_test_email():
-    response = sending_test_email()
-    return response

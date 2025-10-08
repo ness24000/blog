@@ -4,9 +4,7 @@
 
 {% block content %}
 
-{% set placeholder = 'The email seems invalid, try again' %}
-
-{% if first_attempt %}
+{% if placeholder is undefined %}
 {% set placeholder = 'Your email' %}
 {% endif %}
 
