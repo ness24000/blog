@@ -2,19 +2,19 @@ from flask_mail import Message
 from app import mail
 from logging import Logger
 
-def send_confirmation_email(recipients:str, logger: Logger):
+def send_confirmation_email(email_address:str, logger: Logger):
     msg = Message(
         subject="Confirm your text(o)s subscription!",
         sender=("textos", "newsletter@txtos.eu"),
-        recipients=[recipients],
-        body="""
-Dear reader, 
+        recipients=[email_address],
+        html=f"""
+<p>Dear reader,<p>
 
-You have requested to be part of the text(o)s newsletter. 
-In order to confirm this subscription click here. 
+<p>You have requested to be part of the text(o)s newsletter. In order to confirm this subscription
+    <a href="http://txtos.eu/newsletter-confirmation/{email_address}">click here </a>
+</p>
 
-If you did not request access to the text(o)s newsletter, ignore this email. 
-You will not be subscribed. 
+<p>If you did not request access to the text(o)s newsletter, ignore this email. You will not be subscribed. </p>
 """,
     )
     try:

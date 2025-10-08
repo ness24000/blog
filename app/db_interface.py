@@ -107,12 +107,12 @@ def check_email_exists_in_db(email_address: str, path_to_db: str):
     return False
 
 
-def email_confirmation_in_db(email: str, path_to_db: str):
+def email_confirmation_in_db(email_address: str, path_to_db: str):
     con = sqlite3.connect(path_to_db)
     cur = con.cursor()
 
     cur.execute(
-        "UPDATE email SET (confirmed) = (?) where email_address = ?", (True, email)
+        "UPDATE email SET (confirmed) = (?) where email_address = ?", (True, email_address)
     )
 
     con.commit()
