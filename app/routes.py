@@ -51,7 +51,7 @@ def newsletter():
             )
 
         # 3. try sending
-        email_sent_status = send_confirmation_email(email_address, logger)
+        email_sent_status = send_confirmation_email(email_address,logger)
 
         if email_sent_status:
             add_email_to_db(email_address, app.config["PATH_TO_DB"])
@@ -127,7 +127,7 @@ def add_post():
         )
 
         # email everyone in newsletter
-        send_newsletter(logger)
+        send_newsletter(title,preview_html,logger)
 
         return redirect("/")
 
