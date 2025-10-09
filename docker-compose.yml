@@ -14,7 +14,7 @@ services:
       MAIL_SERVER: ${MAIL_SERVER}
       MAIL_PORT: ${MAIL_PORT}
       MAIL_USERNAME: ${MAIL_USERNAME}
-      MAILTRAP_API_KEY: ${MAILTRAP_API_KEY}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
       
     entrypoint: ["gunicorn", "-b", "0.0.0.0:8080", "blog_app:app"]
     

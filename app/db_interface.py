@@ -102,7 +102,7 @@ def check_email_exists_in_db(email_address: str, path_to_db: str):
         "select id from email where email_address=?;", (email_address,)
     ).fetchall()
 
-    if len(rows_with_email_count)>0:
+    if len(rows_with_email_count) > 0:
         return True
     return False
 
@@ -112,12 +112,23 @@ def email_confirmation_in_db(email_address: str, path_to_db: str):
     cur = con.cursor()
 
     cur.execute(
-        "UPDATE email SET (confirmed) = (?) where email_address = ?", (True, email_address)
+        "UPDATE email SET (confirmed) = (?) where email_address = ?",
+        (True, email_address),
     )
 
     con.commit()
 
-def get_confirmed_emails_in_db(path_to_db:str):
+
+def remove_email_from_db(email_address: str, path_to_db: str):
+
+    con = sqlite3.connect(path_to_db)
+    cur = con.cursor()
+
+    cur.execute("DELETE FROM email WHERE email_address=?;", (email_address,))
+    con.commit()
+
+
+def get_confirmed_emails_in_db(path_to_db: str):
     con = sqlite3.connect(path_to_db)
     cur = con.cursor()
 
@@ -127,5 +138,4 @@ def get_confirmed_emails_in_db(path_to_db:str):
 
     list_confirmed_email_addresses = [row[0] for row in confirmed_email_addresses]
 
-    return list_confirmed_email_addresses    
-    
+    return list_confirmed_email_addresses

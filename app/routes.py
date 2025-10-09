@@ -6,7 +6,8 @@ from werkzeug.security import check_password_hash
 from app import app, cur, logger
 from app.db_interface import (add_email_to_db, add_post_to_db,
                               check_email_exists_in_db, delete_post_in_db,
-                              email_confirmation_in_db, update_post_in_db)
+                              email_confirmation_in_db, remove_email_from_db,
+                              update_post_in_db)
 from app.emailing import send_confirmation_email, send_newsletter
 from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
 from app.input_processing import format_post_input
@@ -51,7 +52,7 @@ def newsletter():
             )
 
         # 3. try sending
-        email_sent_status = send_confirmation_email(email_address,logger)
+        email_sent_status = send_confirmation_email(email_address, logger)
 
         if email_sent_status:
             add_email_to_db(email_address, app.config["PATH_TO_DB"])
@@ -92,6 +93,25 @@ def newsletter_confirmation(signed_email_address):
     return render_template("email_confirmed.html")
 
 
+@app.route("/newsletter-unsubscribe/<string:signed_email_address>")
+def newsletter_unsubscribe(signed_email_address):
+    email_address = load_signed_data(
+        signed_email_address,
+        secret_key=app.config["ADMIN_KEY_HASH"],
+        salt="unsubscribe",
+    )
+    try:
+        remove_email_from_db(email_address, app.config["PATH_TO_DB"])
+    except Exception:
+        logger.error(
+            f"Failed unsubscribing email {email_address}, whith exception: {Exception}"
+        )
+        return "Oops, something went wrong. Try again later :)"
+
+    logger.debug(f"{email_address} unsubscribed")
+    return render_template("unsubscribed.html")
+
+
 @app.route("/post/<int:post_id>")
 def post(post_id):
     post = cur.execute(
@@ -127,7 +147,7 @@ def add_post():
         )
 
         # email everyone in newsletter
-        send_newsletter(title,preview_html,logger)
+        send_newsletter(title, preview_html, logger)
 
         return redirect("/")
 
