@@ -7,3 +7,4 @@ gunicorn
 flask_limiter
 flask_mail
 email_validator
+itsdangerous

@@ -1,23 +1,17 @@
 import numpy as np
+from email_validator import EmailNotValidError, validate_email
 from flask import redirect, render_template, request
 from werkzeug.security import check_password_hash
 
-
 from app import app, cur, logger
-from app.db_interface import (
-    add_post_to_db,
-    update_post_in_db,
-    delete_post_in_db,
-    check_email_exists_in_db,
-    add_email_to_db,
-    email_confirmation_in_db
-)
+from app.db_interface import (add_email_to_db, add_post_to_db,
+                              check_email_exists_in_db, delete_post_in_db,
+                              email_confirmation_in_db, update_post_in_db)
+from app.emailing import send_confirmation_email
 from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
 from app.input_processing import format_post_input
 from app.limiter import limiter
-from app.utils import get_date
-from app.emailing import send_confirmation_email
-from email_validator import validate_email, EmailNotValidError
+from app.utils import get_date, load_signed_data
 
 
 @app.route("/")
@@ -61,28 +55,42 @@ def newsletter():
 
         if email_sent_status:
             add_email_to_db(email_address, app.config["PATH_TO_DB"])
-            
+
             logger.debug(f"{form.email.data} suscribed [not confirmed]")
             return render_template("request_email_confirmation.html")
 
         else:
-            logger.debug(f"Error sending email to {form.email.data}, check mailtrap logs")
+            logger.debug(
+                f"Error sending email to {form.email.data}, check mailtrap logs"
+            )
             form = SubscribeToNewsletter()
             form.email.data = ""
             placeholder_message = "Error processing your suscription, try again later"
-            return render_template("newsletter.html", form = form, placeholder=placeholder_message)
+            return render_template(
+                "newsletter.html", form=form, placeholder=placeholder_message
+            )
 
     return render_template("newsletter.html", form=form)
 
-@app.route("/newsletter-confirmation/<string:email_address>")
-def newsletter_confirmation(email_address):
+
+@app.route("/newsletter-confirmation/<string:signed_email_address>")
+def newsletter_confirmation(signed_email_address):
+    email_address = load_signed_data(
+        signed_email_address,
+        secret_key=app.config["ADMIN_KEY_HASH"],
+        salt="confirmation",
+    )
     try:
-        email_confirmation_in_db(email_address,app.config["PATH_TO_DB"])
+        email_confirmation_in_db(email_address, app.config["PATH_TO_DB"])
     except Exception:
-        logger.error(f"Failed confirming email {email_address}, whith exception: {Exception}")
+        logger.error(
+            f"Failed confirming email {email_address}, whith exception: {Exception}"
+        )
         return "Oops, something went wrong. Try again later :)"
 
+    logger.debug(f"{email_address} suscribed [confirmed]")
     return render_template("email_confirmed.html")
+
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
