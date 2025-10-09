@@ -4,6 +4,7 @@ from flask_mail import Message
 
 from app import app, mail
 from app.utils import sign_data
+from app.db_interface import get_confirmed_emails_in_db
 
 
 def send_confirmation_email(email_address: str, logger: Logger):
@@ -23,6 +24,8 @@ def send_confirmation_email(email_address: str, logger: Logger):
 </p>
 
 <p>If you did not request access to the text(o)s newsletter, ignore this email. You will not be subscribed. </p>
+
+<a href="__unsubscribe_url__"></a>
 """,
     )
     try:
@@ -31,3 +34,29 @@ def send_confirmation_email(email_address: str, logger: Logger):
     except Exception as e:
         logger.info(f"Failed to send to {email_address} with {e}")
         return False
+
+
+def send_bulk_email(email_addresses:list[str], logger: Logger):
+    msg = Message(
+        subject="New post!",
+        sender=("textos", "newsletter@txtos.eu"),
+        recipients=email_addresses,
+        html="""
+        <p>testing</p>
+        <p>No longer interested? You can <a href="txtos.eu/unsuscribe">unsubscribe</a> 
+        from the newsletter</p>
+
+        <a href="__unsubscribe_url__"></a>
+        """
+    )
+    try:
+        mail.send(msg)
+        return True
+    except Exception as e:
+        logger.info(f"Failed to send bulk email with {e}")
+        return False
+
+
+def send_newsletter(logger:Logger):
+    email_addresses = get_confirmed_emails_in_db(app.config["PATH_TO_DB"])
+    send_bulk_email(email_addresses,logger)

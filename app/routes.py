@@ -7,7 +7,7 @@ from app import app, cur, logger
 from app.db_interface import (add_email_to_db, add_post_to_db,
                               check_email_exists_in_db, delete_post_in_db,
                               email_confirmation_in_db, update_post_in_db)
-from app.emailing import send_confirmation_email
+from app.emailing import send_confirmation_email, send_newsletter
 from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
 from app.input_processing import format_post_input
 from app.limiter import limiter
@@ -125,6 +125,9 @@ def add_post():
             content_html,
             app.config["PATH_TO_DB"],
         )
+
+        # email everyone in newsletter
+        send_newsletter(logger)
 
         return redirect("/")
 
