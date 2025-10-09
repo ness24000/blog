@@ -8,6 +8,7 @@ class Config:
     LOG_LEVEL = os.getenv("LOG_LEVEL") or "DEBUG"
     PATH_TO_DB = os.getenv("PATH_TO_DB") or "./data/posts.db"
     ADMIN_KEY_HASH = generate_password_hash(os.getenv("ADMIN_KEY"))
+    DOMAIN_NAME = os.getenv("DOMAIN_NAME") or "localhost:8080"
     
     MAIL_SERVER = os.getenv("MAIL_SERVER")
     MAIL_PORT = int(os.getenv("MAIL_PORT"))
