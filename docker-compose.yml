@@ -17,4 +17,5 @@ services:
       MAIL_PASSWORD: ${MAIL_PASSWORD}
       
     entrypoint: ["gunicorn", "-b", "0.0.0.0:8080", "blog_app:app"]
-    
+  redis:
+    image: redis
