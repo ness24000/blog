@@ -10,3 +10,4 @@ email_validator
 itsdangerous
 requests
 celery
+redis
