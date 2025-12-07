@@ -18,7 +18,7 @@ class Config:
     MAIL_USE_SSL = False
 
     CELERY = {
-        "broker_url": os.getenv("CELEREY_BROKER_URL"),
+        "broker_url": os.getenv("CELERY_BROKER_URL"),
         "result_backend": os.getenv("CELERY_RESULT_BROKER"),
         "task_ignore_result": True,
     }

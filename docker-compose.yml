@@ -15,7 +15,10 @@ services:
       MAIL_PORT: ${MAIL_PORT}
       MAIL_USERNAME: ${MAIL_USERNAME}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BROKER: ${CELERY_RESULT_BROKER}
+
       
     entrypoint: ["/app/entrypoint.sh"]
-  redis:
+  redis_db:
     image: redis
