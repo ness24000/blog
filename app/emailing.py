@@ -1,10 +1,11 @@
 from logging import Logger
 
+from celery import shared_task
 from flask_mail import Message
 
 from app import app, mail
-from app.utils import sign_data
 from app.db_interface import get_confirmed_emails_in_db
+from app.utils import sign_data
 
 
 def send_email(
@@ -56,15 +57,16 @@ def send_confirmation_email(email_address: str, logger: Logger):
     return sent_status
 
 
+@shared_task(ignore_result=False)
 def send_newsletter(post_title: str, post_preview: str, logger: Logger):
 
-    list_email_addresses = get_confirmed_emails_in_db(app.config["PATH_TO_DB"])
+    email_addresses = get_confirmed_emails_in_db(app.config["PATH_TO_DB"])
 
-    if len(list_email_addresses == 0):
+    if len(email_addresses) == 0:
         logger.debug("Newsletter not sent due to 0 suscribers")
         return False
 
-    unsuscribe_links = {
+    email_addresses_and_links = {
         email_address: {
             "unsuscribe_link": sign_data(
                 email_address,
@@ -72,22 +74,25 @@ def send_newsletter(post_title: str, post_preview: str, logger: Logger):
                 salt="unsubscribe",
             )
         }
-        for email_address in list_email_addresses
+        for email_address in email_addresses
     }
-
-    extra_headers = {"X-Mailgun-Recipient-Variables": str(unsuscribe_links)}
 
     inline_post_preview = post_preview.replace("<p>", "").replace("</p>", "")
     subject = "New post!"
-    message = f"""
-        <p>Dear reader,</p>
-        <p>We just wrote something called <b>{post_title}</b>. It is described to be
-          about: {inline_post_preview}. Hope you enjoy it! </p>
-        
-        <p style="margin-top:25px">No longer interested? You can 
-        <a href="txtos.eu/unsuscribe/%recipient.unsuscribe_link%">unsubscribe</a> 
-        from the newsletter</p>
+    
+    for email, unsuscribe_link in email_addresses_and_links.items():
 
-        """
+        message = f"""
+            <p>Dear reader,</p>
+            <p>We just wrote something called <b>{post_title}</b>. It is described to be
+            about: {inline_post_preview}. Hope you enjoy it! </p>
+            
+            <p style="margin-top:25px">No longer interested? You can 
+            <a href="{unsuscribe_link}">unsubscribe</a> 
+            from the newsletter</p>
 
-    send_email(r"%recipient%", subject, message, logger, extra_headers)
+            """
+
+        send_email(email, subject, message, logger)
+
+    logger.info(f"Sent newsletter to {len(email_addresses)} people")
