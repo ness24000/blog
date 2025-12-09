@@ -59,18 +59,18 @@ def send_confirmation_email(email_address: str, logger: Logger):
 
 
 @shared_task(ignore_result=False)
-def send_newsletter(post_title: str, post_preview: str):
+def send_newsletter(post_title: str, post_preview: str, secret_key):
 
     email_addresses = get_confirmed_emails_in_db(app.config["PATH_TO_DB"])
 
     if len(email_addresses) == 0:
-        return "Newsletter not sent due to 0 suscribers"
+        return "Newsletter not sent due to 0 subscribers"
 
     email_addresses_and_links = {
         email_address: sign_data(
                 email_address,
-                secret_key=app.config["ADMIN_KEY_HASH"],
-                salt="unsubscribe",
+                secret_key=secret_key,
+                salt="unsubscribe"
             )
         
         for email_address in email_addresses

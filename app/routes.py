@@ -147,7 +147,7 @@ def add_post():
         )
 
         # email everyone in newsletter
-        send_newsletter.delay(title, preview_html)
+        send_newsletter.delay(title, preview_html, app.config["ADMIN_KEY_HASH"])
 
         return redirect("/")
 
