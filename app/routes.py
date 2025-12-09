@@ -25,6 +25,7 @@ def index():
 
 
 @app.route("/newsletter", methods=["GET", "POST"])
+@limiter.limit("5 per day", methods=["POST"])
 def newsletter():
     form = SubscribeToNewsletter()
 
@@ -121,7 +122,7 @@ def post(post_id):
 
 
 @app.route("/add_post", methods=["GET", "POST"])
-@limiter.limit("5 per minute")
+@limiter.limit("5 per minute", methods = ["POST"])
 def add_post():
     form = AddPostForm()
 
@@ -161,7 +162,7 @@ def list_posts_edit():
 
 
 @app.route("/edit_post/<int:post_id>", methods=["GET", "POST"])
-@limiter.limit("5 per minute")
+@limiter.limit("5 per minute", methods=["POST"])
 def edit_post(post_id):
 
     form = AddPostForm()
@@ -200,7 +201,7 @@ def edit_post(post_id):
 
 
 @app.route("/delete_post/<int:post_id>", methods=["GET", "POST"])
-@limiter.limit("5 per minute")
+@limiter.limit("5 per minute", methods=["POST"])
 def delete_post(post_id):
 
     form = DeletePostForm()
