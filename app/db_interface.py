@@ -1,7 +1,5 @@
-import logging
-import os
-import re
 import sqlite3
+from app.utils import get_date
 
 
 def initialize_db(path_to_db: str):
@@ -17,8 +15,15 @@ def initialize_db(path_to_db: str):
        preview_md VARCHAR NOT NULL,
        content_html VARCHAR NOT NULL,
        preview_html VARCHAR NOT NULL);"""
-
     cur.executescript(sql_create_posts)
+
+    sql_create_email = """CREATE TABLE IF NOT EXISTS email (
+       id INTEGER PRIMARY KEY NOT NULL,
+       date VARCHAR NOT NULL,
+       email_address VARCHAR NOT NULL UNIQUE,
+       confirmed VARCHAR NOT NULL);"""
+    cur.executescript(sql_create_email)
+
     con.commit()
 
 
@@ -73,4 +78,64 @@ def delete_post_in_db(post_id: int, path_to_db: str):
     cur.execute("delete from posts where id = ?;", (post_id,))
 
     con.commit()
-    pass
+
+
+def add_email_to_db(email: str, path_to_db: str):
+    con = sqlite3.connect(path_to_db)
+    cur = con.cursor()
+
+    date = get_date()
+    confirmed = False
+
+    cur.execute(
+        "INSERT INTO email(date, email_address, confirmed) VALUES (?,?,?)",
+        (date, email, confirmed),
+    )
+    con.commit()
+
+
+def check_email_exists_in_db(email_address: str, path_to_db: str):
+    con = sqlite3.connect(path_to_db)
+    cur = con.cursor()
+
+    rows_with_email_count = cur.execute(
+        "select id from email where email_address=?;", (email_address,)
+    ).fetchall()
+
+    if len(rows_with_email_count) > 0:
+        return True
+    return False
+
+
+def email_confirmation_in_db(email_address: str, path_to_db: str):
+    con = sqlite3.connect(path_to_db)
+    cur = con.cursor()
+
+    cur.execute(
+        "UPDATE email SET (confirmed) = (?) where email_address = ?",
+        (True, email_address),
+    )
+
+    con.commit()
+
+
+def remove_email_from_db(email_address: str, path_to_db: str):
+
+    con = sqlite3.connect(path_to_db)
+    cur = con.cursor()
+
+    cur.execute("DELETE FROM email WHERE email_address=?;", (email_address,))
+    con.commit()
+
+
+def get_confirmed_emails_in_db(path_to_db: str):
+    con = sqlite3.connect(path_to_db)
+    cur = con.cursor()
+
+    confirmed_email_addresses = cur.execute(
+        "SELECT email_address FROM email WHERE confirmed=1;"
+    ).fetchall()
+
+    list_confirmed_email_addresses = [row[0] for row in confirmed_email_addresses]
+
+    return list_confirmed_email_addresses

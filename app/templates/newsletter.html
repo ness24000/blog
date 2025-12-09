@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %} newsletter {% endblock %}
+
+{% block content %}
+
+{% if placeholder is undefined %}
+{% set placeholder = 'Your email' %}
+{% endif %}
+
+<p style="text-align: center;font-size:30px;">
+    Subscribe to the newsletter!
+</p>
+
+<form class="add_post_form" method="post">
+    {{ form.hidden_tag() }}
+    <p> {{ form.email(placeholder=placeholder)}}</p>
+    <input type="submit" value="Subscribe">
+</form>
+
+<p>
+    <b>What's the deal?</b>
+    <ul>
+        <li>You will receive an email whenever there is a new post.</li>
+        <li>Changed your mind? You can unsuscribe using the link at the bottom of each email.</li>
+    </ul>
+
+</p>
+
+{% endblock %}
