@@ -17,6 +17,7 @@ services:
       MAIL_PASSWORD: ${MAIL_PASSWORD}
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}
       CELERY_RESULT_BROKER: ${CELERY_RESULT_BROKER}
+      LIMITER_STORAGE_URI: ${LIMITER_STORAGE_URI}
 
       
     entrypoint: ["/app/entrypoint.sh"]

@@ -22,3 +22,5 @@ class Config:
         "result_backend": os.getenv("CELERY_RESULT_BROKER"),
         "task_ignore_result": True,
     }
+
+    LIMITER_STORAGE_URI = os.getenv("LIMITER_STORAGE_URI")
