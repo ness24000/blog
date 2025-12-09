@@ -147,7 +147,7 @@ def add_post():
         )
 
         # email everyone in newsletter
-        send_newsletter.delay(title, preview_html, logger)
+        send_newsletter.delay(title, preview_html)
 
         return redirect("/")
 
