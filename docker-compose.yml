@@ -15,6 +15,10 @@ services:
       MAIL_PORT: ${MAIL_PORT}
       MAIL_USERNAME: ${MAIL_USERNAME}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BROKER: ${CELERY_RESULT_BROKER}
+
       
-    entrypoint: ["gunicorn", "-b", "0.0.0.0:8080", "blog_app:app"]
-    
+    entrypoint: ["/app/entrypoint.sh"]
+  redis_db:
+    image: redis
