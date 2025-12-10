@@ -31,3 +31,23 @@ services:
         condition: service_healthy
       
     entrypoint: ["/app/entrypoint.sh"]
+  
+  celery_worker: 
+    build: . 
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL}
+      PATH_TO_DB: ${PATH_TO_DB}
+      ADMIN_KEY: ${ADMIN_KEY}
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      MAIL_SERVER: ${MAIL_SERVER}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BROKER: ${CELERY_RESULT_BROKER}
+      LIMITER_STORAGE_URI: ${LIMITER_STORAGE_URI}
+    depends_on:
+      redis_db:
+        condition: service_healthy
+      
+    entrypoint: ["celery -A app.celery_app worker"]
