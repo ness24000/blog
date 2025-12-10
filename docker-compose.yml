@@ -1,4 +1,12 @@
 services:
+  redis_db:
+    image: redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 10s
+      retries: 3
+
   app:
     build: .
     ports:
@@ -18,8 +26,8 @@ services:
       CELERY_BROKER_URL: ${CELERY_BROKER_URL}
       CELERY_RESULT_BROKER: ${CELERY_RESULT_BROKER}
       LIMITER_STORAGE_URI: ${LIMITER_STORAGE_URI}
-
+    depends_on:
+      redis_db:
+        condition: service_healthy
       
     entrypoint: ["/app/entrypoint.sh"]
-  redis_db:
-    image: redis
