@@ -34,6 +34,10 @@ services:
   
   celery_worker: 
     build: . 
+    volumes: 
+      - ./app:/app/app
+      - ./data:/app/data
+
     environment:
       LOG_LEVEL: ${LOG_LEVEL}
       PATH_TO_DB: ${PATH_TO_DB}
@@ -50,4 +54,4 @@ services:
       redis_db:
         condition: service_healthy
       
-    entrypoint: ["celery -A app.celery_app worker"]
+    entrypoint: ["celery", "-A", "app.celery_app", "worker"]
