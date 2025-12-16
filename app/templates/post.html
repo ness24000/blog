@@ -1,29 +1,33 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <title> {{ post[0] }} </title>
-  <meta name="viewport" content="width:device-width,initial-scale=1.0" />
-  <link rel="stylesheet" href="{{
+  <head>
+    <title> {{ post[0] }} </title>
+    <meta name="viewport" content="width:device-width,initial-scale=1.0" />
+    <link rel="stylesheet" href="{{
 				 url_for('static',filename='style.css') }}">
-  <script>
+    <script>
     MathJax = {
       tex: {
         inlineMath: [['$', '$']]
       }
     };
   </script>
-  <script type="text/javascript" id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
-</head>
+  </head>
 
-<body>
-  <div class="blog_content">
-    <h1> {{ post[0] }} </h1>
-    <p id="post_date"> {{ post[1] }} </p>
-    {{ post[2]|safe }}
-  </div>
-</body>
+  <body>
+    <div class="card">
+
+      <div class="blog_content">
+        <h1> {{ post[0] }} </h1>
+        <p id="post_date"> {{ post[1] }} </p>
+        {{ post[2]|safe }}
+      </div>
+    </div>
+
+  </body>
 
 </html>

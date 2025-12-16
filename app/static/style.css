@@ -1,11 +1,12 @@
 html {
     color-scheme: light dark;
-    --background: light-dark(white, #21201b);
+    --sides: light-dark(rgb(173, 164, 164), rgba(39, 38, 38, 0.953));
+    --background: light-dark(white, #393833);
     --text: light-dark(black, white);
 }
 
 * {
-    background-color: var(--background);
+    background-color: var(--sides);
     color: var(--text);
     font-family: Helvetica, sans-serif;
 }
@@ -88,10 +89,31 @@ html {
 .blog_content {
     color: var(--text);
     clear: both;
-    width: 80%;
+    /* width: 80%; */
     max-width: 850px;
     margin: auto;
     font-size: 21px;
+    background-color: var(--background);
+}
+
+.spacer {
+    height: 1vw; 
+    width: 70%;
+    margin:auto;
+}
+
+.card {
+    width: 47%;
+    margin: auto;
+    background-color: var(--background);
+    padding: 50px;
+    padding-top: 15px;
+    padding-bottom: 20px;
+}
+
+.card * {
+    /* border: solid 1px red; */
+    background-color: var(--background);
 }
 
 .blog_content>p {
