@@ -3,9 +3,9 @@ services:
     image: redis
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 3s
+      interval: 1s
       timeout: 10s
-      retries: 3
+      retries: 5
 
   app:
     build: .
