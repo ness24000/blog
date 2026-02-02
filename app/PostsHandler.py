@@ -43,13 +43,21 @@ class PostsHandler:
             "SELECT id, title, date, preview_html FROM posts"
         )
 
-        # latest first
+        # sort so last in first out
         posts = np.flip(posts, axis=0)
         return posts
 
-    def get_post(self, post_id=int) -> Tuple:
+    def get_post(self, post_id=int, raw: bool = False) -> Tuple:
+
+        sql = "SELECT title, date, preview_html, content_html FROM posts WHERE id = ?"
+        if raw:
+            sql = (
+                "SELECT title, date, preview_md, content_md FROM posts WHERE id = ?"
+            )
+
+
         post = self.db_handler.execute_read(
-            "SELECT title, date, content_html FROM posts WHERE id = ?",
+            sql,
             (post_id,),
             fetch_one=True,
         )
@@ -65,13 +73,23 @@ class PostsHandler:
 
         self.db_handler.execute_write(
             "INSERT INTO posts(title, date, preview_md, content_md, preview_html, content_html) VALUES (?,?,?,?,?,?)",
-            (title, current_date, preview_md, content_md, preview_html, content_html)
+            (title, current_date, preview_md, content_md, preview_html, content_html),
         )
 
         self.logger.debug(f"Added post with title {title}")
 
-    def edit_post(self):
-        pass
+    def edit_post(self, post_id: int, title: str, preview: str, content: str) -> None:
+
+        title, preview_md, content_md, preview_html, content_html = (
+            self._format_post_input(title, preview, content)
+        )
+
+        self.db_handler.execute_write(
+            "UPDATE posts SET (title, preview_md, content_md, preview_html, content_html) = (?,?,?,?,?) where id = ?",
+            (title, preview_md, content_md, preview_html, content_html, post_id),
+        )
+
+        self.logger.debug(f"Updating post {post_id} with new title {title}")
 
     def delete_post(self, post_id: int) -> None:
         self.db_handler.execute_write("delete from posts where id = ?;", (post_id,))

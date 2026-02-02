@@ -1,26 +1,5 @@
 import sqlite3
 
-def update_post_in_db(
-    post_id: int,
-    title: str,
-    preview_md: str,
-    content_md: str,
-    preview_html: str,
-    content_html: str,
-    path_to_db: str,
-):
-    con = sqlite3.connect(path_to_db)
-    cur = con.cursor()
-
-    cur.execute(
-        "UPDATE posts SET (title, preview_md, content_md, preview_html, content_html) = (?,?,?,?,?) where id = ?",
-        (title, preview_md, content_md, preview_html, content_html, post_id),
-    )
-
-    con.commit()
-
-
-
 def add_email_to_db(email: str, path_to_db: str):
     con = sqlite3.connect(path_to_db)
     cur = con.cursor()

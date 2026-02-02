@@ -3,10 +3,13 @@ from email_validator import EmailNotValidError, validate_email
 from flask import redirect, render_template, request
 from werkzeug.security import check_password_hash
 
-from app import app, logger, db_handler, posts_handler
-from app.db_interface import (add_email_to_db, check_email_exists_in_db,
-                              email_confirmation_in_db, remove_email_from_db,
-                              update_post_in_db)
+from app import app, logger, posts_handler
+from app.db_interface import (
+    add_email_to_db,
+    check_email_exists_in_db,
+    email_confirmation_in_db,
+    remove_email_from_db
+)
 from app.emailing import send_confirmation_email, send_newsletter
 from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
 from app.limiter import limiter
@@ -115,7 +118,7 @@ def post(post_id):
 
 
 @app.route("/add_post", methods=["GET", "POST"])
-@limiter.limit("5 per minute", methods = ["POST"])
+@limiter.limit("5 per minute", methods=["POST"])
 def add_post():
     form = AddPostForm()
 
@@ -123,9 +126,7 @@ def add_post():
         if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
             return render_template("add_post.html", form=form)
 
-    
         posts_handler.add_post(form.title.data, form.preview.data, form.content.data)
-
 
         # email everyone in newsletter
         # send_newsletter.delay(title, preview_html, app.config["ADMIN_KEY_HASH"])
@@ -137,7 +138,7 @@ def add_post():
 
 @app.route("/edit_post/")
 def list_posts_edit():
-    posts = posts_handler.get_posts_overview() 
+    posts = posts_handler.get_posts_overview()
     return render_template("list_posts.html", posts=posts)
 
 
@@ -153,28 +154,13 @@ def edit_post(post_id):
 
     # POST: format input run as in add post, use app.db_interface.update_post_in_db
     if form.validate_on_submit():
-        logger.debug(f"Updating post {post_id}  with new title {form.title.data}")
-
-        title, preview_md, content_md, preview_html, content_html = format_post_input(
-            form.title.data, form.preview.data, form.content.data
+        posts_handler.edit_post(
+            post_id, form.title.data, form.preview.data, form.content.data
         )
-        update_post_in_db(
-            post_id,
-            title,
-            preview_md,
-            content_md,
-            preview_html,
-            content_html,
-            app.config["PATH_TO_DB"],
-        )
-
         return redirect("/")
 
     # GET: return the edit_post.html with filled fields
-    pos_id, title, date, preview_md, content_md = cur.execute(
-        "SELECT id, title, date, preview_md, content_md FROM posts WHERE id=?",
-        [post_id],
-    ).fetchone()
+    title, date, preview_md, content_md = posts_handler.get_post(post_id, raw=True)
     form = AddPostForm(title=title, date=date, content=content_md, preview=preview_md)
 
     return render_template("add_post.html", form=form, update=True)
