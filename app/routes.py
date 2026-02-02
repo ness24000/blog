@@ -206,8 +206,7 @@ def delete_post(post_id):
 
     # POST: format input run as in add post, use app.db_interface.update_post_in_db
     if form.validate_on_submit():
-        logger.debug(f"Deleting post {post_id}")
-        delete_post_in_db(post_id, app.config["PATH_TO_DB"])
+        posts_handler.delete_post(post_id)
 
         return redirect("/")
 

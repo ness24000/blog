@@ -50,4 +50,12 @@ class PostsHandler:
         )
         return post
 
-    def add
+    def add_post(self):
+        pass
+
+    def edit_post(self):
+        pass
+
+    def delete_post(self, post_id: int) -> None:
+        self.db_handler.execute_write("delete from posts where id = ?;", (post_id,))
+        self.logger.debug(f"Deleting post {post_id}")
