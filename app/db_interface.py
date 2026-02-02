@@ -1,32 +1,5 @@
 import sqlite3
 
-def add_email_to_db(email: str, path_to_db: str):
-    con = sqlite3.connect(path_to_db)
-    cur = con.cursor()
-
-    date = get_date()
-    confirmed = False
-
-    cur.execute(
-        "INSERT INTO email(date, email_address, confirmed) VALUES (?,?,?)",
-        (date, email, confirmed),
-    )
-    con.commit()
-
-
-def check_email_exists_in_db(email_address: str, path_to_db: str):
-    con = sqlite3.connect(path_to_db)
-    cur = con.cursor()
-
-    rows_with_email_count = cur.execute(
-        "select id from email where email_address=?;", (email_address,)
-    ).fetchall()
-
-    if len(rows_with_email_count) > 0:
-        return True
-    return False
-
-
 def email_confirmation_in_db(email_address: str, path_to_db: str):
     con = sqlite3.connect(path_to_db)
     cur = con.cursor()

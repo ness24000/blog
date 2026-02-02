@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from flask_mail import Mail
+
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.celery_init_app import celery_init_app
@@ -10,6 +10,7 @@ from config import Config
 
 from app.DBHandler import DBHandler
 from app.PostsHandler import PostsHandler
+from app.MailHandler import MailHandler
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -27,8 +28,8 @@ db_handler = DBHandler(
 )
 
 posts_handler = PostsHandler(db_handler, logger)
+mail_handler = MailHandler(app,db_handler,logger)
 
-mail = Mail(app)
 celery_app = celery_init_app(app)
 
 from app import errorhandlers, routes

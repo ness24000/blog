@@ -1,19 +1,12 @@
 import numpy as np
-from email_validator import EmailNotValidError, validate_email
+
 from flask import redirect, render_template, request
 from werkzeug.security import check_password_hash
 
-from app import app, logger, posts_handler
-from app.db_interface import (
-    add_email_to_db,
-    check_email_exists_in_db,
-    email_confirmation_in_db,
-    remove_email_from_db
-)
-from app.emailing import send_confirmation_email, send_newsletter
+from app import app, logger, posts_handler, mail_handler
+from app.db_interface import email_confirmation_in_db, remove_email_from_db
 from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
 from app.limiter import limiter
-from app.utils import load_signed_data
 
 
 @app.route("/")
@@ -29,46 +22,25 @@ def newsletter():
 
     if form.validate_on_submit():
 
-        # 1. validate email format
-        try:
-            emailinfo = validate_email(form.email.data)
-            email_address = emailinfo.normalized
-        except EmailNotValidError:
-            form = SubscribeToNewsletter()
-            form.email.data = ""  # explicitly clear the field
-            placeholder_message = "This email seems invalid, try again"
-            return render_template(
-                "newsletter.html", form=form, placeholder=placeholder_message
-            )
+        add_email_status = mail_handler.add_email(form.email.data)
 
-        # 2. check if email in db
-        if check_email_exists_in_db(email_address, app.config["PATH_TO_DB"]):
+        if add_email_status != "no_error":
             form = SubscribeToNewsletter()
             form.email.data = ""
-            placeholder_message = "It seems you are already suscribed!"
+            placeholder_message_dict = {
+                "validation_error": "This email seems invalid, try again",
+                "not_new_error": "It seems you are already suscribed!",
+                "sending_error": "Error processing your suscription, try again later",
+            }
+
             return render_template(
-                "newsletter.html", form=form, placeholder=placeholder_message
+                "newsletter.html",
+                form=form,
+                placeholder=placeholder_message_dict[add_email_status],
             )
-
-        # 3. try sending
-        email_sent_status = send_confirmation_email(email_address, logger)
-
-        if email_sent_status:
-            add_email_to_db(email_address, app.config["PATH_TO_DB"])
-
+        else:
             logger.debug(f"{form.email.data} suscribed [not confirmed]")
             return render_template("request_email_confirmation.html")
-
-        else:
-            logger.debug(
-                f"Error sending email to {form.email.data}, check mailtrap logs"
-            )
-            form = SubscribeToNewsletter()
-            form.email.data = ""
-            placeholder_message = "Error processing your suscription, try again later"
-            return render_template(
-                "newsletter.html", form=form, placeholder=placeholder_message
-            )
 
     return render_template("newsletter.html", form=form)
 
