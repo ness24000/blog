@@ -3,24 +3,21 @@ from email_validator import EmailNotValidError, validate_email
 from flask import redirect, render_template, request
 from werkzeug.security import check_password_hash
 
-from app import app, logger, db_handler
+from app import app, logger, db_handler, posts_handler
 from app.db_interface import (add_email_to_db, add_post_to_db,
                               check_email_exists_in_db, delete_post_in_db,
                               email_confirmation_in_db, remove_email_from_db,
                               update_post_in_db)
 from app.emailing import send_confirmation_email, send_newsletter
 from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
-from app.input_processing import format_post_input
 from app.limiter import limiter
 from app.utils import get_date, load_signed_data
 
 
 @app.route("/")
 def index():
-    posts = db_handler.execute_read("SELECT id, title, date, preview_html FROM posts")
-    posts_sorted = np.flip(posts,axis=0)
-    
-    return render_template("index.html", posts=posts_sorted)
+    posts = posts_handler.get_posts_overview()
+    return render_template("index.html", posts=posts)
 
 
 @app.route("/newsletter", methods=["GET", "POST"])
@@ -114,9 +111,7 @@ def newsletter_unsubscribe(signed_email_address):
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
-    post = cur.execute(
-        "SELECT title, date, content_html FROM posts WHERE id = ?", [post_id]
-    ).fetchone()
+    post = posts_handler.get_post(post_id)
     return render_template("post.html", post=post)
 
 
@@ -156,7 +151,7 @@ def add_post():
 
 @app.route("/edit_post/")
 def list_posts_edit():
-    posts = np.flip(cur.execute("SELECT id, title FROM posts").fetchall(), axis=0)
+    posts = posts_handler.get_posts_overview() 
     return render_template("list_posts.html", posts=posts)
 
 

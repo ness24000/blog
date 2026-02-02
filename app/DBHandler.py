@@ -55,12 +55,16 @@ class DBHandler:
 
                 con.commit()
 
-    def execute_read(self, sql: str, parameters: Tuple = ()) -> List:
+    def execute_read(self, sql: str, parameters: Tuple = (), fetch_one: bool = False) -> List[Tuple]|Tuple:
 
         with self.pool.connection() as con:
             with con.cursor() as cur:
                 cur.execute(sql, parameters)
-                result = cur.fetchall()
+
+                if fetch_one:
+                    result = cur.fetchone()
+                else:
+                    result = cur.fetchall()
 
         return result
 
