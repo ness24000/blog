@@ -1,25 +1,4 @@
 import sqlite3
-from app.utils import get_date
-
-def add_post_to_db(
-    title: str,
-    date: str,
-    preview_md: str,
-    content_md: str,
-    preview_html: str,
-    content_html: str,
-    path_to_db: str,
-):
-
-    con = sqlite3.connect(path_to_db)
-    cur = con.cursor()
-
-    cur.execute(
-        "INSERT INTO posts(title, date, preview_md, content_md, preview_html, content_html) VALUES (?,?,?,?,?,?)",
-        (title, date, preview_md, content_md, preview_html, content_html),
-    )
-    con.commit()
-
 
 def update_post_in_db(
     post_id: int,
@@ -40,13 +19,6 @@ def update_post_in_db(
 
     con.commit()
 
-
-def delete_post_in_db(post_id: int, path_to_db: str):
-    con = sqlite3.connect(path_to_db)
-    cur = con.cursor()
-    cur.execute("delete from posts where id = ?;", (post_id,))
-
-    con.commit()
 
 
 def add_email_to_db(email: str, path_to_db: str):

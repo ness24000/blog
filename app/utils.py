@@ -1,11 +1,6 @@
 import logging
-from datetime import date
 from itsdangerous import URLSafeSerializer
 from typing import Any
-
-def get_date():
-    return date.today().strftime("%d %B %Y")
-
 
 def get_logger(name: str, log_level: str = "WARNING"):
     logger = logging.getLogger(name)

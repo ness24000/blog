@@ -4,14 +4,13 @@ from flask import redirect, render_template, request
 from werkzeug.security import check_password_hash
 
 from app import app, logger, db_handler, posts_handler
-from app.db_interface import (add_email_to_db, add_post_to_db,
-                              check_email_exists_in_db, delete_post_in_db,
+from app.db_interface import (add_email_to_db, check_email_exists_in_db,
                               email_confirmation_in_db, remove_email_from_db,
                               update_post_in_db)
 from app.emailing import send_confirmation_email, send_newsletter
 from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
 from app.limiter import limiter
-from app.utils import get_date, load_signed_data
+from app.utils import load_signed_data
 
 
 @app.route("/")
@@ -124,25 +123,12 @@ def add_post():
         if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
             return render_template("add_post.html", form=form)
 
-        logger.debug(f"Adding post with title {form.title.data}")
+    
+        posts_handler.add_post(form.title.data, form.preview.data, form.content.data)
 
-        title, preview_md, content_md, preview_html, content_html = format_post_input(
-            form.title.data, form.preview.data, form.content.data
-        )
-        date = get_date()
-
-        add_post_to_db(
-            title,
-            date,
-            preview_md,
-            content_md,
-            preview_html,
-            content_html,
-            app.config["PATH_TO_DB"],
-        )
 
         # email everyone in newsletter
-        send_newsletter.delay(title, preview_html, app.config["ADMIN_KEY_HASH"])
+        # send_newsletter.delay(title, preview_html, app.config["ADMIN_KEY_HASH"])
 
         return redirect("/")
 
