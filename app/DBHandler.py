@@ -12,13 +12,13 @@ class DBHandler:
         logger: Logger,
         max_pool_overflow: int,
         pool_size: int,
-    ):
+    ) -> None:
         self.path_to_db = path_to_db
         self.logger = logger
         self.max_pool_overflow = max_pool_overflow
         self.pool_size = pool_size
         self.pool = self._initialize_connection_pool()
-        
+
         self._initialize_db()
 
     def _initialize_connection_pool(self):
@@ -55,20 +55,18 @@ class DBHandler:
 
                 con.commit()
 
-    def execute_read(self, sql: str, parameters:Tuple = ()) -> List:
-        
+    def execute_read(self, sql: str, parameters: Tuple = ()) -> List:
+
         with self.pool.connection() as con:
             with con.cursor() as cur:
-                cur.execute(sql,parameters)
+                cur.execute(sql, parameters)
                 result = cur.fetchall()
-        
+
         return result
-        
+
     def execute_write(self, sql: str, parameters: Tuple = ()) -> None:
-        
+
         with self.pool.connection() as con:
             with con.cursor() as cur:
-                cur.execute(sql,parameters)
+                cur.execute(sql, parameters)
                 con.commit()
-                    
-            

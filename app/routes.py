@@ -3,7 +3,7 @@ from email_validator import EmailNotValidError, validate_email
 from flask import redirect, render_template, request
 from werkzeug.security import check_password_hash
 
-from app import app, logger, dbHandler
+from app import app, logger, db_handler
 from app.db_interface import (add_email_to_db, add_post_to_db,
                               check_email_exists_in_db, delete_post_in_db,
                               email_confirmation_in_db, remove_email_from_db,
@@ -17,7 +17,7 @@ from app.utils import get_date, load_signed_data
 
 @app.route("/")
 def index():
-    posts = dbHandler.execute_read("SELECT id, title, date, preview_html FROM posts")
+    posts = db_handler.execute_read("SELECT id, title, date, preview_html FROM posts")
     posts_sorted = np.flip(posts,axis=0)
     
     return render_template("index.html", posts=posts_sorted)

@@ -16,7 +16,7 @@ app.config.from_object(Config)
 
 logger = get_logger(__name__, app.config["LOG_LEVEL"])
 
-dbHandler = DBHandler(
+db_handler = DBHandler(
     app.config["PATH_TO_DB"],
     logger,
     app.config["MAX_POOL_OVERFLOW"],
