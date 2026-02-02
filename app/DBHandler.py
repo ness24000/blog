@@ -18,6 +18,8 @@ class DBHandler:
         self.max_pool_overflow = max_pool_overflow
         self.pool_size = pool_size
         self.pool = self._initialize_connection_pool()
+        
+        self._initialize_db()
 
     def _initialize_connection_pool(self):
         pool = PooledDB(
