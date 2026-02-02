@@ -1,10 +1,11 @@
 import re
 from datetime import date
 from logging import Logger
-from typing import List, Tuple
+from typing import Tuple
 
 import markdown
 import numpy as np
+from app.utils import get_date
 
 from app.DBHandler import DBHandler
 
@@ -34,10 +35,6 @@ class PostsHandler:
 
         return title, preview, content, preview_html, content_html
 
-    def _get_date(self):
-
-        return date.today().strftime("%d %B %Y")
-
     def get_posts_overview(self) -> np.ndarray:
         posts = self.db_handler.execute_read(
             "SELECT id, title, date, preview_html FROM posts"
@@ -51,10 +48,7 @@ class PostsHandler:
 
         sql = "SELECT title, date, preview_html, content_html FROM posts WHERE id = ?"
         if raw:
-            sql = (
-                "SELECT title, date, preview_md, content_md FROM posts WHERE id = ?"
-            )
-
+            sql = "SELECT title, date, preview_md, content_md FROM posts WHERE id = ?"
 
         post = self.db_handler.execute_read(
             sql,
@@ -69,7 +63,7 @@ class PostsHandler:
             self._format_post_input(title, preview, content)
         )
 
-        current_date = self._get_date()
+        current_date = get_date()
 
         self.db_handler.execute_write(
             "INSERT INTO posts(title, date, preview_md, content_md, preview_html, content_html) VALUES (?,?,?,?,?,?)",

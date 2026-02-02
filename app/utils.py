@@ -1,3 +1,4 @@
+from datetime import date
 import logging
 from itsdangerous import URLSafeSerializer
 from typing import Any
@@ -15,13 +16,6 @@ def get_logger(name: str, log_level: str = "WARNING"):
 
     return logger
 
-def sign_data(data: Any, secret_key: str|bytes, salt=str|bytes|None):
-    s = URLSafeSerializer(secret_key, salt)
-    signed_data = s.dumps(data)
-    return signed_data
+def get_date():
 
-def load_signed_data(signed_data: str|bytes, secret_key: str|bytes, salt=str|bytes|None):
-    s = URLSafeSerializer(secret_key, salt)
-    data = s.loads(signed_data)
-    return data
-    
+    return date.today().strftime("%d %B %Y")
