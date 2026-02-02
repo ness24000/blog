@@ -11,3 +11,4 @@ itsdangerous
 requests
 celery
 redis
+dbutils

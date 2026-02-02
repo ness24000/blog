@@ -17,6 +17,8 @@ services:
     environment:
       LOG_LEVEL: ${LOG_LEVEL}
       PATH_TO_DB: ${PATH_TO_DB}
+      POOL_SIZE: ${POOL_SIZE}
+      MAX_POOL_OVERFLOW: ${MAX_POOL_OVERFLOW}
       ADMIN_KEY: ${ADMIN_KEY}
       DOMAIN_NAME: ${DOMAIN_NAME}
       MAIL_SERVER: ${MAIL_SERVER}
