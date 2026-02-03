@@ -190,7 +190,7 @@ class MailHandler:
         try:
             email_address = self._load_signed_email(
                 signed_email_address,
-                salt="confirmation",
+                salt="unsubscribe",
             )
             self.db_handler.execute_write(
                 "DELETE FROM email WHERE email_address=?;", (email_address,)
