@@ -178,8 +178,8 @@ class MailHandler:
                 "UPDATE email SET (confirmed) = (?) where email_address = ?",
                 (True, email_address),
             )
-        except Exception:
-            self.logger.error(f"Email confirmation failed with exception: {Exception}")
+        except Exception as e:
+            self.logger.error(f"Email confirmation failed with exception: {e}")
             return False
         else:
             self.logger.debug(f"{email_address} suscribed [confirmed]")
@@ -195,9 +195,9 @@ class MailHandler:
             self.db_handler.execute_write(
                 "DELETE FROM email WHERE email_address=?;", (email_address,)
             )
-        except Exception:
+        except Exception as e:
             self.logger.error(
-                f"Failed unsubscribing email {email_address}, whith exception: {Exception}"
+                f"Failed unsubscribing email, whith exception: {e}"
             )
             return False
         else:
