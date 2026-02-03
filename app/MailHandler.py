@@ -76,15 +76,19 @@ class MailHandler:
 
         return sent_status
 
-    def _validate_email_format(self, email_address: str) -> str | None:
+    def _validate_email_format(
+        self, email_address: str, return_normalized=False
+    ) -> str | None:
 
         try:
             email_info = validate_email(email_address)
-            email_address = email_info.normalized
+            email_address = email_info.normalized.lower()
+
         except EmailNotValidError:
             return None
         else:
-            return email_address
+            if return_normalized:
+                return email_address
 
     def _check_email_exists(self, email_address: str) -> bool:
 
@@ -151,7 +155,7 @@ class MailHandler:
 
     def add_email(self, email_address: str) -> str:
 
-        normalized_email_address = self._validate_email_format(email_address)
+        normalized_email_address = self._validate_email_format(email_address, return_normalized=True)
         if normalized_email_address == None:
             return "validation_error"
 
