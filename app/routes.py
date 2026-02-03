@@ -1,9 +1,15 @@
 from flask import redirect, render_template, request
 from werkzeug.security import check_password_hash
 
-from app import app, posts_handler, mail_handler
+from app import app, logger, posts_handler, mail_handler, limiter
 from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
-from app.limiter import limiter
+
+
+
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    logger.warning(f"Rate limit reached: {e}")
+    return redirect("https://en.wikipedia.org/wiki/Rate_limiting")
 
 
 @app.route("/")

@@ -1,14 +1,13 @@
 from flask import Flask
-
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.celery_init_app import celery_init_app
+from app.DBHandler import DBHandler
+from app.limiter_init import limiter_init
+from app.MailHandler import MailHandler
+from app.PostsHandler import PostsHandler
 from app.utils import get_logger
 from config import Config
-
-from app.DBHandler import DBHandler
-from app.PostsHandler import PostsHandler
-from app.MailHandler import MailHandler
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -24,13 +23,11 @@ db_handler = DBHandler(
     app.config["MAX_POOL_OVERFLOW"],
     app.config["POOL_SIZE"],
 )
-
 posts_handler = PostsHandler(db_handler, logger)
-
-mail_handler = MailHandler(app,db_handler,logger)
-
+mail_handler = MailHandler(app, db_handler, logger)
 celery_app = celery_init_app(app)
+limiter = limiter_init(app)
 
-from app import errorhandlers, routes
+from app import routes
 
 logger.debug(f"Blog initialization finished")
