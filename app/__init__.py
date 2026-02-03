@@ -1,5 +1,3 @@
-import os
-
 from flask import Flask
 
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -28,6 +26,7 @@ db_handler = DBHandler(
 )
 
 posts_handler = PostsHandler(db_handler, logger)
+
 mail_handler = MailHandler(app,db_handler,logger)
 
 celery_app = celery_init_app(app)

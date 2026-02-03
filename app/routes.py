@@ -1,9 +1,7 @@
-import numpy as np
-
 from flask import redirect, render_template, request
 from werkzeug.security import check_password_hash
 
-from app import app, logger, posts_handler, mail_handler
+from app import app, posts_handler, mail_handler
 from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
 from app.limiter import limiter
 
@@ -24,6 +22,8 @@ def newsletter():
         add_email_status = mail_handler.add_email(form.email.data)
 
         if add_email_status != "no_error":
+
+            # show message corresponding to add_email error
             form = SubscribeToNewsletter()
             form.email.data = ""
             placeholder_message_dict = {
@@ -80,9 +80,7 @@ def add_post():
             form.title.data, form.preview.data, form.content.data, return_rendered=True
         )
 
-        # email everyone in newsletter
         mail_handler.send_newsletter(form.title.data, preview_html)
-
         return redirect("/")
 
     return render_template("add_post.html", form=form)
