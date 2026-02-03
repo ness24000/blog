@@ -72,7 +72,7 @@ def post(post_id):
 def add_post():
     form = AddPostForm()
 
-    if request.method == "POST":
+    if form.validate_on_submit():
         if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
             return render_template("add_post.html", form=form)
 
@@ -98,18 +98,16 @@ def edit_post(post_id):
 
     form = AddPostForm()
 
-    if request.method == "POST":
+    if form.validate_on_submit():
         if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
             return render_template("add_post.html", form=form)
 
-    # POST: format input run as in add post, use app.db_interface.update_post_in_db
-    if form.validate_on_submit():
         posts_handler.edit_post(
             post_id, form.title.data, form.preview.data, form.content.data
         )
         return redirect("/")
 
-    # GET: return the edit_post.html with filled fields
+    # GET: return the add_post.html with filled fields
     title, date, preview_md, content_md = posts_handler.get_post(post_id, raw=True)
     form = AddPostForm(title=title, date=date, content=content_md, preview=preview_md)
 
@@ -122,15 +120,11 @@ def delete_post(post_id):
 
     form = DeletePostForm()
 
-    if request.method == "POST":
+    if form.validate_on_submit():
         if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
             return render_template("delete_post.html", form=form)
-
-    # POST: format input run as in add post, use app.db_interface.update_post_in_db
-    if form.validate_on_submit():
+        
         posts_handler.delete_post(post_id)
-
         return redirect("/")
 
-    # GET: return form to include password
     return render_template("delete_post.html", form=form)
