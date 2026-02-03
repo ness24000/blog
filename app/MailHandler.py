@@ -1,13 +1,14 @@
 from logging import Logger
-from typing import Any, Tuple
+from typing import Any, List
 
+from celery import shared_task
 from email_validator import EmailNotValidError, validate_email
 from flask import Flask
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeSerializer
-from app.utils import get_date
 
 from app.DBHandler import DBHandler
+from app.utils import get_date
 
 
 class MailHandler:
@@ -17,12 +18,13 @@ class MailHandler:
         self.db_handler = db_handler
         self.logger = logger
 
+    @shared_task()
     def _send_email(
-        self,
+        flask_mail_app: Mail,
         recipients: str | list[str],
         subject: str,
         message: str,
-        extra_headers: dict[str, str] | None = None,
+        extra_headers: dict[str, str] | None = None
     ):
         if isinstance(recipients, str):
             recipients = [recipients]
@@ -35,18 +37,17 @@ class MailHandler:
             extra_headers=extra_headers,
         )
         try:
-            self.flask_mail.send(msg)
+            flask_mail_app.send(msg)
         except Exception as e:
-            self.logger.info(f"Failed to send email: '{subject}' with {e}")
+            # self.logger.info(f"Failed to send email: '{subject}' with {e}")
             return False
         else:
             return True
 
     def _send_confirmation_email(self, email_address: str) -> bool:
 
-        signed_email_address = self._sign_data(
+        signed_email_address = self._sign_email(
             email_address,
-            secret_key=self.flask_app.config["ADMIN_KEY_HASH"],
             salt="confirmation",
         )
 
@@ -88,20 +89,56 @@ class MailHandler:
 
         return False
 
-    def _sign_data(self, data: Any, secret_key: str, salt: str) -> str:
-        s = URLSafeSerializer(secret_key, salt)
+    def _get_confirmed_emails(self) -> List:
+        confirmed_emails = self.db_handler.execute_read(
+            "SELECT email_address FROM email WHERE confirmed=1;"
+        )
+
+        # get first element per singleton
+        confirmed_emails = [row[0] for row in confirmed_emails]
+        return confirmed_emails
+
+    def _sign_email(self, data: Any, salt: str) -> str:
+        s = URLSafeSerializer(self.flask_app.config["ADMIN_KEY_HASH"], salt)
         signed_data = s.dumps(data)
         return signed_data
 
-    def _load_signed_data(
-        self, signed_data: str | bytes, secret_key: str | bytes, salt: str
-    ) -> str:
-        s = URLSafeSerializer(secret_key, salt)
+    def _load_signed_email(self, signed_data: str | bytes, salt: str) -> str:
+        s = URLSafeSerializer(self.flask_app.config["ADMIN_KEY_HASH"], salt)
         data = s.loads(signed_data)
         return data
 
-    def send_newsletter(self) -> None:
-        pass
+    def send_newsletter(self, post_title: str, post_preview: str) -> None:
+
+        email_addresses = self._get_confirmed_emails()
+        n_email_addresses = len(email_addresses)
+
+        if n_email_addresses == 0:
+            self.logger.debug("Newsletter not sent due to 0 subscribers")
+            return
+
+        self.logger.debug(f"Sending newsletter to {n_email_addresses} subscribers")
+        unsubscribe_links = [
+            self._sign_email(email_address, salt="unsubscribe")
+            for email_address in email_addresses
+        ]
+
+        inline_post_preview = post_preview.replace("<p>", "").replace("</p>", "")
+        subject = "New post!"
+
+        for i in range(n_email_addresses):
+            message = f"""
+                <p>Dear reader,</p>
+                <p>We just wrote something called <b>{post_title}</b>. It is described to be
+                about: {inline_post_preview}. Hope you enjoy it! </p>
+                
+                <p style="margin-top:25px">No longer interested? You can 
+                <a href="http://{self.flask_app.config["DOMAIN_NAME"]}/newsletter-unsubscribe/{unsubscribe_links[i]}">
+                unsubscribe</a> from the newsletter</p>
+
+                """
+
+            self._send_email.delay(self.flask_mail, email_addresses[i], subject, message)
 
     def add_email(self, email_address: str) -> str:
 
@@ -122,10 +159,42 @@ class MailHandler:
             "INSERT INTO email(date, email_address, confirmed) VALUES (?,?,?)",
             (get_date(), normalized_email_address, confirmed),
         )
+        self.logger.debug(f"{normalized_email_address} suscribed [not confirmed]")
         return "no_error"
 
-    def confirm_email(self) -> None:
-        pass
+    def confirm_email(self, signed_email_address: str) -> bool:
 
-    def delete_email(self) -> None:
-        pass
+        try:
+            email_address = self._load_signed_email(
+                signed_email_address,
+                salt="confirmation",
+            )
+            self.db_handler.execute_write(
+                "UPDATE email SET (confirmed) = (?) where email_address = ?",
+                (True, email_address),
+            )
+        except Exception:
+            self.logger.error(f"Email confirmation failed with exception: {Exception}")
+            return False
+        else:
+            self.logger.debug(f"{email_address} suscribed [confirmed]")
+            return True
+
+    def delete_email(self, signed_email_address: str) -> bool:
+
+        try:
+            email_address = self._load_signed_email(
+                signed_email_address,
+                salt="confirmation",
+            )
+            self.db_handler.execute_write(
+                "DELETE FROM email WHERE email_address=?;", (email_address,)
+            )
+        except Exception:
+            self.logger.error(
+                f"Failed unsubscribing email {email_address}, whith exception: {Exception}"
+            )
+            return False
+        else:
+            self.logger.debug(f"{email_address} unsubscribed")
+            return True

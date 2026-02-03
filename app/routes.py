@@ -4,7 +4,6 @@ from flask import redirect, render_template, request
 from werkzeug.security import check_password_hash
 
 from app import app, logger, posts_handler, mail_handler
-from app.db_interface import email_confirmation_in_db, remove_email_from_db
 from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
 from app.limiter import limiter
 
@@ -39,7 +38,6 @@ def newsletter():
                 placeholder=placeholder_message_dict[add_email_status],
             )
         else:
-            logger.debug(f"{form.email.data} suscribed [not confirmed]")
             return render_template("request_email_confirmation.html")
 
     return render_template("newsletter.html", form=form)
@@ -47,40 +45,20 @@ def newsletter():
 
 @app.route("/newsletter-confirmation/<string:signed_email_address>")
 def newsletter_confirmation(signed_email_address):
-    email_address = load_signed_data(
-        signed_email_address,
-        secret_key=app.config["ADMIN_KEY_HASH"],
-        salt="confirmation",
-    )
-    try:
-        email_confirmation_in_db(email_address, app.config["PATH_TO_DB"])
-    except Exception:
-        logger.error(
-            f"Failed confirming email {email_address}, whith exception: {Exception}"
-        )
-        return "Oops, something went wrong. Try again later :)"
 
-    logger.debug(f"{email_address} suscribed [confirmed]")
-    return render_template("email_confirmed.html")
+    if mail_handler.confirm_email(signed_email_address):
+        return render_template("email_confirmed.html")
+    else:
+        return "Oops, something went wrong. Try again later :)"
 
 
 @app.route("/newsletter-unsubscribe/<string:signed_email_address>")
 def newsletter_unsubscribe(signed_email_address):
-    email_address = load_signed_data(
-        signed_email_address,
-        secret_key=app.config["ADMIN_KEY_HASH"],
-        salt="unsubscribe",
-    )
-    try:
-        remove_email_from_db(email_address, app.config["PATH_TO_DB"])
-    except Exception:
-        logger.error(
-            f"Failed unsubscribing email {email_address}, whith exception: {Exception}"
-        )
-        return "Oops, something went wrong. Try again later :)"
 
-    logger.debug(f"{email_address} unsubscribed")
-    return render_template("unsubscribed.html")
+    if mail_handler.delete_email(signed_email_address):
+        return render_template("unsubscribed.html")
+    else:
+        return "Oops, something went wrong. Try again later :)"
 
 
 @app.route("/post/<int:post_id>")
@@ -98,10 +76,12 @@ def add_post():
         if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
             return render_template("add_post.html", form=form)
 
-        posts_handler.add_post(form.title.data, form.preview.data, form.content.data)
+        preview_html, _ = posts_handler.add_post(
+            form.title.data, form.preview.data, form.content.data, return_rendered=True
+        )
 
         # email everyone in newsletter
-        # send_newsletter.delay(title, preview_html, app.config["ADMIN_KEY_HASH"])
+        mail_handler.send_newsletter(form.title.data, preview_html)
 
         return redirect("/")
 
