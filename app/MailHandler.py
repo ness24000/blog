@@ -24,14 +24,14 @@ class MailHandler:
         subject: str,
         message: str,
         extra_headers: dict[str, str] | None = None,
-        verbose: bool = True
+        verbose: bool = True,
     ):
-        """ Celery task to send emails.
-        This method is a celery task. So: 1. cannot access class state, 
+        """Celery task to send emails.
+        This method is a celery task. So: 1. cannot access class state,
         2. cannot get non-json-serializable arguments. Thus, we access
         app.app directly and instantiate a flask_mail.Mail instance.
         """
-        
+
         if isinstance(recipients, str):
             recipients = [recipients]
 
@@ -44,6 +44,7 @@ class MailHandler:
         )
         try:
             from app import app, logger
+
             Mail(app).send(msg)
         except Exception as e:
             logger.debug(f"Failed to send email: '{subject}' with {e}")
@@ -52,7 +53,7 @@ class MailHandler:
             if verbose:
                 logger.debug(f"Sent email to: {recipients}")
             return True
-    
+
     def _send_confirmation_email(self, email_address: str) -> bool:
 
         signed_email_address = self._sign_email(
@@ -151,7 +152,7 @@ class MailHandler:
 
                 """
 
-            self._send_email.delay(email_addresses[i], subject, message, verbose = False)
+            self._send_email.delay(email_addresses[i], subject, message, verbose=False)
 
     def add_email(self, email_address: str) -> str:
 
@@ -204,9 +205,7 @@ class MailHandler:
                 "DELETE FROM email WHERE email_address=?;", (email_address,)
             )
         except Exception as e:
-            self.logger.error(
-                f"Failed unsubscribing email, whith exception: {e}"
-            )
+            self.logger.error(f"Failed unsubscribing email, whith exception: {e}")
             return False
         else:
             self.logger.debug(f"{email_address} unsubscribed")
