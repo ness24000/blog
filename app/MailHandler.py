@@ -20,12 +20,12 @@ class MailHandler:
 
     @shared_task()
     def _send_email(
-        flask_mail_app: Mail,
         recipients: str | list[str],
         subject: str,
         message: str,
         extra_headers: dict[str, str] | None = None
     ):
+        
         if isinstance(recipients, str):
             recipients = [recipients]
 
@@ -37,13 +37,18 @@ class MailHandler:
             extra_headers=extra_headers,
         )
         try:
-            flask_mail_app.send(msg)
+
+            # since this method is going to be ran as a celery task it can: 1. not access any 
+            # class state 2. not be passed non-json-serializable arguments. Thus, we access 
+            # app.app and instantiate a flask_mail.Mail instance inside the function. 
+            from app import app
+            Mail(app).send(msg)
         except Exception as e:
             # self.logger.info(f"Failed to send email: '{subject}' with {e}")
             return False
         else:
             return True
-
+    
     def _send_confirmation_email(self, email_address: str) -> bool:
 
         signed_email_address = self._sign_email(
@@ -138,7 +143,7 @@ class MailHandler:
 
                 """
 
-            self._send_email.delay(self.flask_mail, email_addresses[i], subject, message)
+            self._send_email.delay(email_addresses[i], subject, message)
 
     def add_email(self, email_address: str) -> str:
 
