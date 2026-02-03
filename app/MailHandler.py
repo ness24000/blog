@@ -23,8 +23,14 @@ class MailHandler:
         recipients: str | list[str],
         subject: str,
         message: str,
-        extra_headers: dict[str, str] | None = None
+        extra_headers: dict[str, str] | None = None,
+        verbose: bool = True
     ):
+        """ Celery task to send emails.
+        This method is a celery task. So: 1. cannot access class state, 
+        2. cannot get non-json-serializable arguments. Thus, we access
+        app.app directly and instantiate a flask_mail.Mail instance.
+        """
         
         if isinstance(recipients, str):
             recipients = [recipients]
@@ -37,16 +43,14 @@ class MailHandler:
             extra_headers=extra_headers,
         )
         try:
-
-            # since this method is going to be ran as a celery task it can: 1. not access any 
-            # class state 2. not be passed non-json-serializable arguments. Thus, we access 
-            # app.app and instantiate a flask_mail.Mail instance inside the function. 
-            from app import app
+            from app import app, logger
             Mail(app).send(msg)
         except Exception as e:
-            # self.logger.info(f"Failed to send email: '{subject}' with {e}")
+            logger.debug(f"Failed to send email: '{subject}' with {e}")
             return False
         else:
+            if verbose:
+                logger.debug(f"Sent email to: {recipients}")
             return True
     
     def _send_confirmation_email(self, email_address: str) -> bool:
@@ -143,7 +147,7 @@ class MailHandler:
 
                 """
 
-            self._send_email.delay(email_addresses[i], subject, message)
+            self._send_email.delay(email_addresses[i], subject, message, verbose = False)
 
     def add_email(self, email_address: str) -> str:
 

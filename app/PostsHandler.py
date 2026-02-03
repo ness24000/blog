@@ -15,7 +15,9 @@ class PostsHandler:
         self.db_handler = db_handler
         self.logger = logger
 
-    def _format_post_input(self, title: str, preview: str, content: str) -> Tuple[str, ...]:
+    def _format_post_input(
+        self, title: str, preview: str, content: str
+    ) -> Tuple[str, ...]:
         IMG_PATTERN = r"!\[.*\]\("
         img_folder = title.lower().replace(" ", "_")
 
@@ -29,7 +31,9 @@ class PostsHandler:
         if preview == "":
 
             # if no preview provided, use content's first paragraph
-            preview_html = str(re.findall("<p>.*?</p>", content_html, flags=re.DOTALL)[0])
+            preview_html = str(
+                re.findall("<p>.*?</p>", content_html, flags=re.DOTALL)[0]
+            )
         else:
             preview_html = markdown.markdown(preview)
 
@@ -57,7 +61,9 @@ class PostsHandler:
         )
         return post
 
-    def add_post(self, title: str, preview: str, content: str, return_rendered: bool = False) -> None|Tuple[str, str]:
+    def add_post(
+        self, title: str, preview: str, content: str, return_rendered: bool = False
+    ) -> None | Tuple[str, str]:
 
         title, preview_md, content_md, preview_html, content_html = (
             self._format_post_input(title, preview, content)
@@ -89,5 +95,11 @@ class PostsHandler:
         self.logger.debug(f"Updating post {post_id} with new title {title}")
 
     def delete_post(self, post_id: int) -> None:
+        
+        title = self.db_handler.execute_read(
+            "select title from posts where id = ?", (post_id,), fetch_one=True
+        )[0]
+        self.logger.debug(f"Deleting post {post_id}, with title: {title}")
+
         self.db_handler.execute_write("delete from posts where id = ?;", (post_id,))
-        self.logger.debug(f"Deleting post {post_id}")
+        
