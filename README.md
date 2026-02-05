@@ -1,4 +1,4 @@
-# A simple Flask-based blog
+# A lightweight Flask-based blog
 
 **Table of contents**
   - [Overview](#overview)
@@ -10,7 +10,7 @@
 
 ## Overview
 
-This is a simple **Flask-based blog application**. It includes *extended* **markdown** support (e.g. tables, math) and complete **newsletter** logic via email. It serves as the [author's blog](https://txtos.eu), and as playground to learn stuff🛝. 
+This is a lightweight **Flask-based blog application**. It includes *extended* **markdown** support (e.g. tables, math) and complete **newsletter** logic via email. It serves as the [author's blog](https://txtos.eu), and as playground to learn stuff🛝. 
 
 A key guiding principle is to keep the code as simple as possible. This mostly means avoiding bloating it with software that can do a thousand things in order to get one small thing done. 
 
