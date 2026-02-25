@@ -1,5 +1,6 @@
 data/*.db
-posts
+data/media/*
+!data/media/.gitkeep
 __*
-.*
+.env
 venv

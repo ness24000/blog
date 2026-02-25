@@ -9,6 +9,7 @@ class Config:
     PATH_TO_DB = os.getenv("PATH_TO_DB") or "./data/posts.db"
     POOL_SIZE = int(os.getenv("POOL_SIZE"))
     MAX_POOL_OVERFLOW = int(os.getenv("MAX_POOL_OVERFLOW"))
+    PATH_TO_MEDIA_FOLDER = os.path.abspath(os.getenv("PATH_TO_MEDIA_FOLDER") or "./data/media")
     ADMIN_KEY_HASH = generate_password_hash(os.getenv("ADMIN_KEY"))
     DOMAIN_NAME = os.getenv("DOMAIN_NAME") or "localhost:8080"
 

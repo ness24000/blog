@@ -5,9 +5,10 @@ from typing import Tuple
 
 import markdown
 import numpy as np
-from app.utils import get_date
+from flask import Flask
 
 from app.DBHandler import DBHandler
+from app.utils import get_date
 
 
 class PostsHandler:
@@ -19,10 +20,10 @@ class PostsHandler:
         self, title: str, preview: str, content: str, post_id: int
     ) -> Tuple[str, ...]:
         IMG_PATTERN = r"!\[.*\]\("
-        img_folder = str(post_id)
+        img_url_prefix = f"/media/{post_id}/"
 
-        def produce_image_path(matchobj, img_folder=img_folder):
-            return matchobj.group(0) + f"../static/{img_folder}/"
+        def produce_image_path(matchobj, img_url_prefix=img_url_prefix):
+            return matchobj.group(0) + img_url_prefix
 
         content_html = re.sub(IMG_PATTERN, produce_image_path, content)
 

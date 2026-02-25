@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from flask import redirect, render_template, request
+from flask import redirect, render_template, request, send_from_directory
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 
@@ -21,7 +21,7 @@ def _save_images(files, post_id: int) -> None:
     ]
     if not valid_files:
         return
-    folder = os.path.join(app.root_path, "static", str(post_id))
+    folder = os.path.join(app.config["PATH_TO_MEDIA_FOLDER"], str(post_id))
     os.makedirs(folder, exist_ok=True)
     for f in valid_files:
         f.save(os.path.join(folder, secure_filename(f.filename)))
@@ -29,13 +29,14 @@ def _save_images(files, post_id: int) -> None:
 
 def _delete_images(post_id: int) -> None:
     """Remove the image folder for a post, if it exists."""
-    folder = os.path.join(app.root_path, "static", str(post_id))
+    folder = os.path.join(app.config["PATH_TO_MEDIA_FOLDER"], str(post_id))
+    
     shutil.rmtree(folder, ignore_errors=True)
 
 
 def _list_images(post_id: int) -> list[str]:
     """Return sorted list of image filenames for a post, or [] if none."""
-    folder = os.path.join(app.root_path, "static", str(post_id))
+    folder = os.path.join(app.config["PATH_TO_MEDIA_FOLDER"], str(post_id))
     if not os.path.isdir(folder):
         return []
     return sorted(os.listdir(folder))
@@ -43,11 +44,17 @@ def _list_images(post_id: int) -> list[str]:
 
 def _remove_selected_images(post_id: int, filenames: list[str]) -> None:
     """Delete specific image files from the post's static folder."""
-    folder = os.path.join(app.root_path, "static", str(post_id))
+    folder = os.path.join(app.config["PATH_TO_MEDIA_FOLDER"], str(post_id))
     for name in filenames:
         target = os.path.join(folder, secure_filename(name))
         if os.path.isfile(target):
             os.remove(target)
+
+
+@app.route("/media/<int:post_id>/<path:filename>")
+def media(post_id, filename):
+    folder = os.path.join(app.config["PATH_TO_MEDIA_FOLDER"], str(post_id))
+    return send_from_directory(folder, filename)
 
 
 @app.errorhandler(429)
