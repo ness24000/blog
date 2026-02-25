@@ -16,10 +16,10 @@ class PostsHandler:
         self.logger = logger
 
     def _format_post_input(
-        self, title: str, preview: str, content: str
+        self, title: str, preview: str, content: str, post_id: int
     ) -> Tuple[str, ...]:
         IMG_PATTERN = r"!\[.*\]\("
-        img_folder = title.lower().replace(" ", "_")
+        img_folder = str(post_id)
 
         def produce_image_path(matchobj, img_folder=img_folder):
             return matchobj.group(0) + f"../static/{img_folder}/"
@@ -63,28 +63,35 @@ class PostsHandler:
 
     def add_post(
         self, title: str, preview: str, content: str, return_rendered: bool = False
-    ) -> None | Tuple[str, str]:
-
-        title, preview_md, content_md, preview_html, content_html = (
-            self._format_post_input(title, preview, content)
-        )
+    ) -> int | Tuple:
 
         current_date = get_date()
 
-        self.db_handler.execute_write(
+        # Insert first to obtain the DB-assigned id, used as the image folder name
+        post_id = self.db_handler.execute_write(
             "INSERT INTO posts(title, date, preview_md, content_md, preview_html, content_html) VALUES (?,?,?,?,?,?)",
-            (title, current_date, preview_md, content_md, preview_html, content_html),
+            (title, current_date, preview, content, "", ""),
         )
 
-        self.logger.debug(f"Added post with title {title}")
+        title, preview_md, content_md, preview_html, content_html = (
+            self._format_post_input(title, preview, content, post_id)
+        )
+
+        self.db_handler.execute_write(
+            "UPDATE posts SET preview_md=?, content_md=?, preview_html=?, content_html=? WHERE id=?",
+            (preview_md, content_md, preview_html, content_html, post_id),
+        )
+
+        self.logger.debug(f"Added post with title {title}, id {post_id}")
 
         if return_rendered:
-            return preview_html, content_html
+            return post_id, preview_html, content_html
+        return post_id
 
     def edit_post(self, post_id: int, title: str, preview: str, content: str) -> None:
 
         title, preview_md, content_md, preview_html, content_html = (
-            self._format_post_input(title, preview, content)
+            self._format_post_input(title, preview, content, post_id)
         )
 
         self.db_handler.execute_write(

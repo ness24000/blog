@@ -26,3 +26,5 @@ class Config:
     }
 
     LIMITER_STORAGE_URI = os.getenv("LIMITER_STORAGE_URI")
+
+    MAX_CONTENT_LENGTH = 10 * 1024 * 1024  # 10 MB upload limit

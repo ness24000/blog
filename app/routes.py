@@ -1,9 +1,36 @@
+import os
+import shutil
+
 from flask import redirect, render_template, request
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
 
 from app import app, logger, posts_handler, mail_handler, limiter
 from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
 
+
+ALLOWED_IMAGE_EXTENSIONS = {"jpg", "jpeg", "png", "gif", "webp"}
+
+
+def _save_images(files, post_id: int) -> None:
+    """Save uploaded image files to app/static/<post_id>/."""
+    valid_files = [
+        f for f in files
+        if f and f.filename and "." in f.filename
+        and f.filename.rsplit(".", 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
+    ]
+    if not valid_files:
+        return
+    folder = os.path.join(app.root_path, "static", str(post_id))
+    os.makedirs(folder, exist_ok=True)
+    for f in valid_files:
+        f.save(os.path.join(folder, secure_filename(f.filename)))
+
+
+def _delete_images(post_id: int) -> None:
+    """Remove the image folder for a post, if it exists."""
+    folder = os.path.join(app.root_path, "static", str(post_id))
+    shutil.rmtree(folder, ignore_errors=True)
 
 
 @app.errorhandler(429)
@@ -82,10 +109,11 @@ def add_post():
         if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
             return render_template("add_post.html", form=form)
 
-        preview_html, _ = posts_handler.add_post(
+        post_id, preview_html, _ = posts_handler.add_post(
             form.title.data, form.preview.data, form.content.data, return_rendered=True
         )
 
+        _save_images(request.files.getlist("images"), post_id)
         mail_handler.send_newsletter(form.title.data, preview_html)
         return redirect("/")
 
@@ -111,6 +139,7 @@ def edit_post(post_id):
         posts_handler.edit_post(
             post_id, form.title.data, form.preview.data, form.content.data
         )
+        _save_images(request.files.getlist("images"), post_id)
         return redirect("/")
 
     # GET: return the add_post.html with filled fields
@@ -131,6 +160,7 @@ def delete_post(post_id):
             return render_template("delete_post.html", form=form)
         
         posts_handler.delete_post(post_id)
+        _delete_images(post_id)
         return redirect("/")
 
     return render_template("delete_post.html", form=form)

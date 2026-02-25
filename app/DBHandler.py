@@ -68,9 +68,10 @@ class DBHandler:
 
         return result
 
-    def execute_write(self, sql: str, parameters: Tuple = ()) -> None:
+    def execute_write(self, sql: str, parameters: Tuple = ()) -> int:
 
         with self.pool.connection() as con:
             with con.cursor() as cur:
                 cur.execute(sql, parameters)
                 con.commit()
+                return cur.lastrowid
