@@ -14,10 +14,16 @@
   <p> {{ form.title(placeholder="title")}}</p>
   <p> {{ form.preview(placeholder="preview") }}</p>
   <p> {{ form.content(placeholder="content") }}</p>
-  <p>
-    <label for="images">Images (optional — filenames must match the markdown references):</label><br>
+  {% if update and form.delete_images.choices %}
+  <div id="delete_images_block">
+    <label for="delete_images"> Delete existing images </label><br>
+    {{ form.delete_images() }}
+  </div>
+  {% endif %}
+  <div id="add_images_block">
+    <label for="images"> Add images (name matches markdown reference)</label><br>
     {{ form.images() }}
-  </p>
+  </div>
   <p> {{ form.admin_key(placeholder="admin key") }}</p>
   <input type="submit" value= "{{submit_label}}" >
 </form>

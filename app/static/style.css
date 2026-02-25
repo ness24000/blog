@@ -155,6 +155,44 @@ img {
     height: 40px;
 }
 
+.add_post_form #delete_images_block {
+    margin:auto;
+    width: 80%;
+    max-width: 850px;
+    border: 2px solid var(--text);
+    padding: 7px;
+    color: var(--text);
+    font-size: 21px;
+    margin-bottom: 5px;
+}
+
+
+.add_post_form #delete_images p {
+    margin:0px;
+}
+
+.add_post_form #delete_images input{
+    width: auto;
+ }
+
+.add_post_form #delete_images li::marker{
+    content:'';
+ }
+
+.add_post_form #add_images_block {
+    margin:auto;
+    width: 80%;
+    max-width: 850px;
+    border: 2px solid var(--text);
+    padding: 7px;
+    color: var(--text);
+    font-size: 21px;
+}
+
+.add_post_form #add_images_block input {
+    border: 0px;
+}
+
 /* Quote styling */
 blockquote {
     border-left: 5px solid #aaa;

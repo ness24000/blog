@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 
 from app import app, logger, posts_handler, mail_handler, limiter
-from app.forms import AddPostForm, DeletePostForm, SubscribeToNewsletter
+from app.forms import AddPostForm, DeletePostForm, EditPostForm, SubscribeToNewsletter
 
 
 ALLOWED_IMAGE_EXTENSIONS = {"jpg", "jpeg", "png", "gif", "webp"}
@@ -31,6 +31,23 @@ def _delete_images(post_id: int) -> None:
     """Remove the image folder for a post, if it exists."""
     folder = os.path.join(app.root_path, "static", str(post_id))
     shutil.rmtree(folder, ignore_errors=True)
+
+
+def _list_images(post_id: int) -> list[str]:
+    """Return sorted list of image filenames for a post, or [] if none."""
+    folder = os.path.join(app.root_path, "static", str(post_id))
+    if not os.path.isdir(folder):
+        return []
+    return sorted(os.listdir(folder))
+
+
+def _remove_selected_images(post_id: int, filenames: list[str]) -> None:
+    """Delete specific image files from the post's static folder."""
+    folder = os.path.join(app.root_path, "static", str(post_id))
+    for name in filenames:
+        target = os.path.join(folder, secure_filename(name))
+        if os.path.isfile(target):
+            os.remove(target)
 
 
 @app.errorhandler(429)
@@ -130,21 +147,25 @@ def list_posts_edit():
 @limiter.limit("5 per minute", methods=["POST"])
 def edit_post(post_id):
 
-    form = AddPostForm()
+    existing_images = _list_images(post_id)
+    form = EditPostForm()
+    form.delete_images.choices = [(img, img) for img in existing_images]
 
     if form.validate_on_submit():
         if not check_password_hash(app.config["ADMIN_KEY_HASH"], form.admin_key.data):
-            return render_template("add_post.html", form=form)
+            return render_template("add_post.html", form=form, update=True)
 
         posts_handler.edit_post(
             post_id, form.title.data, form.preview.data, form.content.data
         )
+        _remove_selected_images(post_id, form.delete_images.data)
         _save_images(request.files.getlist("images"), post_id)
         return redirect("/")
 
     # GET: return the add_post.html with filled fields
     title, date, preview_md, content_md = posts_handler.get_post(post_id, raw=True)
-    form = AddPostForm(title=title, date=date, content=content_md, preview=preview_md)
+    form = EditPostForm(title=title, date=date, content=content_md, preview=preview_md)
+    form.delete_images.choices = [(img, img) for img in existing_images]
 
     return render_template("add_post.html", form=form, update=True)
 
