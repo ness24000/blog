@@ -88,8 +88,8 @@ html {
 .blog_content {
     color: var(--text);
     clear: both;
-    width: 80%;
-    max-width: 850px;
+    width: 95%;
+    max-width: 700px;
     margin: auto;
     font-size: 21px;
 }
@@ -113,7 +113,7 @@ p a:hover {
 
 /* Image styling */
 img {
-    max-width: 80%;
+    width: 100%;
     max-height: 500px;
     display: block;
     margin: auto;
