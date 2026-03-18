@@ -5,6 +5,7 @@ from app.celery_init_app import celery_init_app
 from app.DBHandler import DBHandler
 from app.limiter_init import limiter_init
 from app.MailHandler import MailHandler
+from app.MediaHandler import MediaHandler
 from app.PostsHandler import PostsHandler
 from app.utils import get_logger
 from config import Config
@@ -23,7 +24,9 @@ db_handler = DBHandler(
     app.config["MAX_POOL_OVERFLOW"],
     app.config["POOL_SIZE"],
 )
-posts_handler = PostsHandler(db_handler, logger)
+media_handler = MediaHandler(app.config["PATH_TO_MEDIA_FOLDER"], logger)
+
+posts_handler = PostsHandler(db_handler, media_handler, logger)
 mail_handler = MailHandler(app, db_handler, logger)
 celery_app = celery_init_app(app)
 limiter = limiter_init(app)

@@ -1,19 +1,23 @@
 import re
 from datetime import date
 from logging import Logger
-from typing import Tuple
+from typing import Tuple, List
 
 import markdown
 import numpy as np
 from flask import Flask
 
 from app.DBHandler import DBHandler
+from app.MediaHandler import MediaHandler
 from app.utils import get_date
 
 
 class PostsHandler:
-    def __init__(self, db_handler: DBHandler, logger: Logger) -> None:
+    def __init__(
+        self, db_handler: DBHandler, media_handler: MediaHandler, logger: Logger
+    ) -> None:
         self.db_handler = db_handler
+        self.media_handler = media_handler
         self.logger = logger
 
     def _format_post_input(
@@ -49,7 +53,9 @@ class PostsHandler:
         posts = np.flip(posts, axis=0)
         return posts
 
-    def get_post(self, post_id=int, raw: bool = False) -> Tuple:
+    def get_post(
+        self, post_id=int, raw: bool = False, images_list: bool = False
+    ) -> Tuple:
 
         sql = "SELECT title, date, preview_html, content_html FROM posts WHERE id = ?"
         if raw:
@@ -60,10 +66,19 @@ class PostsHandler:
             (post_id,),
             fetch_one=True,
         )
+        if images_list:
+            images_list = self.media_handler.list_images(post_id)
+            post += (images_list,)
+
         return post
 
     def add_post(
-        self, title: str, preview: str, content: str, return_rendered: bool = False
+        self,
+        title: str,
+        preview: str,
+        content: str,
+        images: List,
+        return_rendered: bool = False,
     ) -> int | Tuple:
 
         current_date = get_date()
@@ -85,11 +100,22 @@ class PostsHandler:
 
         self.logger.debug(f"Added post with title {title}, id {post_id}")
 
+        if len(images) > 0:
+            self.media_handler.save_images(images, post_id)
+
         if return_rendered:
             return post_id, preview_html, content_html
         return post_id
 
-    def edit_post(self, post_id: int, title: str, preview: str, content: str) -> None:
+    def edit_post(
+        self,
+        post_id: int,
+        title: str,
+        preview: str,
+        content: str,
+        drop_images: List[str],
+        new_images: List,
+    ) -> None:
 
         title, preview_md, content_md, preview_html, content_html = (
             self._format_post_input(title, preview, content, post_id)
@@ -100,14 +126,17 @@ class PostsHandler:
             (title, preview_md, content_md, preview_html, content_html, post_id),
         )
 
+        self.media_handler.remove_selected_images(post_id, drop_images)
+        self.media_handler.save_images(new_images, post_id)
+
         self.logger.debug(f"Updating post {post_id} with new title {title}")
 
     def delete_post(self, post_id: int) -> None:
-        
+
         title = self.db_handler.execute_read(
             "select title from posts where id = ?", (post_id,), fetch_one=True
         )[0]
         self.logger.debug(f"Deleting post {post_id}, with title: {title}")
 
+        self.media_handler.delete_images(post_id)
         self.db_handler.execute_write("delete from posts where id = ?;", (post_id,))
-        
