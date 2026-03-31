@@ -2,12 +2,12 @@ html {
     color-scheme: light dark;
     --background: light-dark(white, #21201b);
     --text: light-dark(black, white);
+    font-family: Helvetica, sans-serif;
 }
 
 * {
     background-color: var(--background);
     color: var(--text);
-    font-family: Helvetica, sans-serif;
 }
 
 /* General text and geometry styling */
@@ -23,8 +23,8 @@ html {
 }
 
 .square {
-    width: 95%;
-    max-width: 850px;
+    width: 70%;
+    max-width: 700px;
     margin: auto;
     clear: both;
 }
@@ -247,9 +247,10 @@ th {
 
 /* Mathjax styling */
 mjx-container {
-    max-width: 100%;
-    overflow-y:hidden;
-    overflow-x: auto;
+  display: inline-grid;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
 }
 
 /* Responsiveness */
