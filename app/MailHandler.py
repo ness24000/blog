@@ -122,7 +122,7 @@ class MailHandler:
         data = s.loads(signed_data)
         return data
 
-    def send_newsletter(self, post_title: str, post_preview: str) -> None:
+    def send_newsletter(self, post_id: int, post_title: str, post_preview: str) -> None:
 
         email_addresses = self._get_confirmed_emails()
         n_email_addresses = len(email_addresses)
@@ -143,9 +143,9 @@ class MailHandler:
         for i in range(n_email_addresses):
             message = f"""
                 <p>Dear reader,</p>
-                <p>We just wrote something called <b>{post_title}</b>. It is described to be
-                about: {inline_post_preview}. Hope you enjoy it! </p>
-                
+                <p>We just wrote something called <a href="http://{self.flask_app.config["DOMAIN_NAME"]}/post/{post_id}"><b>{post_title}</b></a>
+                It is described to be about: {inline_post_preview}. Hope you enjoy it! </p>
+
                 <p style="margin-top:25px">No longer interested? You can 
                 <a href="http://{self.flask_app.config["DOMAIN_NAME"]}/newsletter-unsubscribe/{unsubscribe_links[i]}">
                 unsubscribe</a> from the newsletter</p>

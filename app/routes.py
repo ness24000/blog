@@ -98,7 +98,7 @@ def add_post():
             return_rendered=True,
         )
 
-        mail_handler.send_newsletter(form.title.data, preview_html)
+        mail_handler.send_newsletter(post_id, form.title.data, preview_html)
         return redirect("/")
 
     return render_template("add_post.html", form=form)
