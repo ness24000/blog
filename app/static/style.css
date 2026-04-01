@@ -256,6 +256,10 @@ mjx-container {
 /* Responsiveness */
 @media only screen and (max-width: 500px) {
 
+    .square {
+        width: 97%;
+    }
+
     .title {
         font-size: 35px;
     }
