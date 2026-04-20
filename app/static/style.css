@@ -23,7 +23,7 @@ html {
 }
 
 .square {
-    width: 70%;
+    width: 100%;
     max-width: 700px;
     margin: auto;
     clear: both;
@@ -117,6 +117,7 @@ img {
     max-height: 500px;
     display: block;
     margin: auto;
+    border-radius: 24px;
 }
 
 /* Administrator side styling */
