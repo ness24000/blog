@@ -95,7 +95,7 @@ html {
 
 .preview>.date {
     margin-top: 0px;
-    margin-bottom: 12px;
+    margin-bottom: 0px;
     font-size: 17px;
     font-family: 'anek telugu';
 }
@@ -155,12 +155,28 @@ img {
 }
 
 .add_post_form input {
+    box-sizing: border-box;
     width: 80%;
     max-width: 850px;
     border: 2px solid var(--text);
     padding: 7px;
     color: var(--text);
     font-size: 21px;
+}
+
+.add_post_form #email {
+    width: 80%;
+    margin-bottom: 0px;
+}
+.add_post_form #email_submit {
+    width: 80%;
+    border-top: 0px;
+}
+
+.email_note {
+    text-align:center; 
+    font-style: oblique;
+    font-size: 17px;
 }
 
 .add_post_form input[type=submit]:hover {

@@ -14,17 +14,14 @@
 
 <form class="add_post_form" method="post">
     {{ form.hidden_tag() }}
-    <p> {{ form.email(placeholder=placeholder)}}</p>
-    <input type="submit" value="Subscribe">
+    {{ form.email(placeholder=placeholder)}}
+    <input id="email_submit" type="submit" value="Subscribe">
 </form>
 
-<p>
-    <b>What's the deal?</b>
-    <ul>
-        <li>You will receive an email whenever there is a new post.</li>
-        <li>Changed your mind? You can unsuscribe using the link at the bottom of each email.</li>
-    </ul>
-
+<p class="email_note">
+    Receive an email whenever there is a new post. <br> Unsubscribe anytime using the link at the bottom of each email.</li>    
 </p>
+
+    
 
 {% endblock %}
