@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 
 
 class MediaHandler:
-    ALLOWED_IMAGE_EXTENSIONS = {"jpg", "jpeg", "png", "gif", "webp"}
+    ALLOWED_IMAGE_EXTENSIONS = {"jpg", "jpeg", "png", "gif", "webp","svg"}
 
     def __init__(self, path_to_media_folder: str, logger: Logger) -> None:
         self.path_to_media_folder = path_to_media_folder
