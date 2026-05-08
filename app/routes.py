@@ -9,6 +9,7 @@ from app.forms import AddPostForm, DeletePostForm, EditPostForm, SubscribeToNews
 
 
 @app.route("/media/<int:post_id>/<path:filename>")
+@limiter.exempt
 def media(post_id, filename):
     folder = os.path.join(app.config["PATH_TO_MEDIA_FOLDER"], str(post_id))
     return send_from_directory(folder, filename)
