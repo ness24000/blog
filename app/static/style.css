@@ -171,10 +171,14 @@ img {
     border-top: 0px;
 }
 
-.email_note {
+.email_note{
+    width: 80%;
+    margin: auto;
+}
+.email_note p {
     text-align:center; 
     font-style: oblique;
-    font-size: 17px;
+    font-size: 17px;    
 }
 
 .add_post_form input[type=submit]:hover {
