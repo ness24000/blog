@@ -85,9 +85,10 @@ html {
     font-family:'Noto Serif Kannada', serif;
 }
 .preview>h3 {
-    margin-bottom: 0;
-    display: inline;
-    line-height: 1;
+    margin-top: 0;
+    margin-bottom: -11px;
+    display: block;
+    width: fit-content;
 }
 
 .preview:hover>h3 {
@@ -97,9 +98,10 @@ html {
 
 .preview>.date {
     margin-top: 0px;
-    margin-bottom: 0px;
+    margin-bottom: 5px;
     font-size: 17px;
     font-family: 'anek telugu', sans-serif;
+    line-height: 1.3;
 }
 
 .preview>p {
@@ -107,6 +109,7 @@ html {
     margin-bottom: 40px;
     font-size: 19px;
     font-family:'Noto Serif Kannada', serif;
+    line-height: 1.3;
 }
 
 .blog_content {
@@ -180,7 +183,7 @@ img {
 .email_note p {
     text-align:center; 
     font-style: oblique;
-    font-size: 17px;    
+    font-size: 16px;    
 }
 
 .add_post_form input[type=submit]:hover {
@@ -353,7 +356,11 @@ mjx-container {
     }
 
     .email_note{
-	width: 100%;
+	    width: 100%;
+    }
+
+    .email_note p {
+        font-size: 15.5px;
     }
 
     .add_post_form textarea {
