@@ -314,7 +314,7 @@ mjx-container {
     }
 
     .title {
-        font-size: 35px;
+        font-size: 45px;
     }
 
     .blog_content>h1 {
@@ -323,7 +323,7 @@ mjx-container {
     }
 
     .square_small {
-        font-size: 17px;
+        font-size: 20px;
     }
 
     .divider2 {
@@ -332,11 +332,11 @@ mjx-container {
     }
 
     .preview>h3{
-        font-size: 23px;
+        font-size: 24px;
     }
 
     .preview>p{
-        font-size: 21px;
+        font-size: 22px;
     }
 
     #post_date {
@@ -355,7 +355,7 @@ mjx-container {
 
     .blog_content {
         width: 97%;
-        font-size: 21px;
+        font-size: 1.3125rem;
     }
 
     .blog_content>p {
