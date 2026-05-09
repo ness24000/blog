@@ -165,11 +165,9 @@ img {
 }
 
 .add_post_form #email {
-    width: 80%;
     margin-bottom: 0px;
 }
 .add_post_form #email_submit {
-    width: 80%;
     border-top: 0px;
 }
 
@@ -329,6 +327,14 @@ mjx-container {
         
     }
 
+    .preview>h3{
+        font-size: 23px;
+    }
+
+    .preview>p{
+        font-size: 21px;
+    }
+
     #post_date {
         text-align: left;
         margin-top: 0px;
@@ -336,7 +342,7 @@ mjx-container {
     }
 
     .add_post_form input {
-        width: 95%;
+        width: 100%;
     }
 
     .add_post_form textarea {
@@ -345,7 +351,7 @@ mjx-container {
 
     .blog_content {
         width: 97%;
-        font-size: 19.5px;
+        font-size: 21px;
     }
 
     .blog_content>p {
