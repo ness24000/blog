@@ -327,16 +327,17 @@ mjx-container {
     }
 
     .divider2 {
-        height: 0.25cm; 
+        height: 0.35cm; 
         
     }
 
     .preview>h3{
-        font-size: 24px;
+        font-size: 26px;
     }
 
     .preview>p{
-        font-size: 22px;
+        font-size: 20px;
+	margin-bottom: 30px;
     }
 
     #post_date {
@@ -347,6 +348,10 @@ mjx-container {
 
     .add_post_form input {
         width: 100%;
+    }
+
+    .email_note{
+	width: 100%;
     }
 
     .add_post_form textarea {
