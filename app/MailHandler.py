@@ -151,12 +151,21 @@ class MailHandler:
                 unsubscribe</a> from the newsletter</p>
 
                 """
-
-            self._send_email.delay(email_addresses[i], subject, message, verbose=False)
+            extra_headers = {
+                "List-Unsubscribe": f"<http://{self.flask_app.config['DOMAIN_NAME']}/newsletter-unsubscribe/{unsubscribe_links[i]}>",
+                "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+                "Precedence": "bulk",
+                "List-Id": f"textos newsletter <newsletter.txtos.eu>"
+            }
+            self._send_email.delay(
+                email_addresses[i], subject, message, extra_headers=extra_headers, verbose=False
+            )
 
     def add_email(self, email_address: str) -> str:
 
-        normalized_email_address = self._validate_email_format(email_address, return_normalized=True)
+        normalized_email_address = self._validate_email_format(
+            email_address, return_normalized=True
+        )
         if normalized_email_address == None:
             return "validation_error"
 
