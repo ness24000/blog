@@ -182,7 +182,7 @@ img {
     width: 80%;
     margin: auto;
 }
-.email_note p {
+.email_note p, .email_note ul li {
     text-align:center; 
     font-style: oblique;
     font-size: 16px;    
