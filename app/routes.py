@@ -32,8 +32,19 @@ def index():
 def newsletter():
     form = SubscribeToNewsletter()
 
+    # logger.info(request.form['js_enabled'])
     if form.validate_on_submit():
 
+        # Check JavaScript for bot detection
+        if form.js_enabled.data != '1':
+            logger.warning(f"Bot detected: {request.remote_addr}")
+            form.email.data = ""
+            return render_template(
+                "newsletter.html",
+                form=form,
+                placeholder="JavaScript is required. Please enable it."
+            )
+        
         add_email_status = mail_handler.add_email(form.email.data)
 
         if add_email_status != "no_error":

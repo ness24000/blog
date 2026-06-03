@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import MultipleFileField, SelectMultipleField, PasswordField, SelectMultipleField, StringField, TextAreaField, validators
+from wtforms import MultipleFileField, SelectMultipleField, PasswordField, SelectMultipleField, StringField, TextAreaField, validators, HiddenField
 from wtforms.widgets import CheckboxInput, ListWidget
 
 
@@ -25,3 +25,4 @@ class SubscribeToNewsletter(FlaskForm):
         "Email Address",
         [validators.input_required()],
     )
+    js_enabled = HiddenField("js_enabled", default="0")

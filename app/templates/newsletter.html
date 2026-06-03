@@ -16,8 +16,12 @@
     {{ form.hidden_tag() }}
     {{ form.email(placeholder=placeholder)}}
     <input id="email_submit" type="submit" value="Subscribe">
-    
 </form>
+
+<!-- Set JS flag to 1 to prove JavaScript ran -->
+<script>
+    document.getElementById('js_enabled').value = '1';
+</script>
 
 <div class="email_note">
     <p>Receive an email whenever there is a new post. <br> Unsubscribe anytime using the link at the bottom of each email.   
