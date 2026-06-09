@@ -1,44 +1,53 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <title>{% block title %} {% endblock %}</title>
-  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-96x96.png') }}" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}" />
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}" />
-  <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}" />
+  <head>
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+    <link rel="icon" type="image/png"
+      href="{{ url_for('static', filename='favicon-96x96.png') }}"
+      sizes="96x96" />
+    <link rel="icon" type="image/svg+xml"
+      href="{{ url_for('static', filename='favicon.svg') }}" />
+    <link rel="apple-touch-icon" sizes="180x180"
+      href="{{ url_for('static', filename='apple-touch-icon.png') }}" />
+    <link rel="manifest"
+      href="{{ url_for('static', filename='site.webmanifest') }}" />
 
-  
-  <meta name="viewport" content="width:device-width,initial-scale=1.0" />
-  <link rel="stylesheet" href="{{
+    <meta name="viewport" content="width:device-width,initial-scale=1.0" />
+    <link rel="stylesheet" href="{{
     url_for('static',filename='style.css') }}">
-  <script>
+    <script>
     MathJax = {
       tex: {
         inlineMath: [['$', '$']]
       }
     };
   </script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
-</head>
+    <script defer
+      src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+  </head>
 
-<body>
-  <div style="height: 1vw;"> </div>
-  <h1 class="title" href="{{ url_for('index') }}">
-    <a class="title_link" href="{{ url_for('index') }}"> TEXT(O)S </a>
-  </h1>
-  <div class="divider1"> </div>
+  <body>
+    <!-- <div style="height: 1vw;"> </div> -->
+    <div class="page_container">
+      <div id="title_div">
+      <h1 class="title" href="{{ url_for('index') }}">
+        <a class="title_link" href="{{ url_for('index') }}"> TEXT(O)S </a>
+      </h1>
 
-  <div class="square">
-    <a class="square_small" href="{{ url_for('index') }}"> Posts </a>
-    <a class="square_small" href="{{ url_for('newsletter') }}"> Newsletter </a>
-  </div>
-  <div class="divider2"> </div>
+      <div class="square">
+        <a class="square_small" id = "left_square_small" href="{{ url_for('index') }}"> Posts </a>
+        <a class="square_small" id = "right_square_small" href="{{ url_for('newsletter') }}"> Newsletter
+        </a>
+      </div>
+      <div class="divider2"> </div>
+      </div>
 
-  <div class="blog_content">
-    {% block content %} {% endblock %}
-  </div>
-</body>
+        {% block content %} {% endblock %}
+      </div>
+    
+
+  </body>
 
 </html>
