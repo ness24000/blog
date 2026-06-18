@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <title> {{ post[0] }} </title>
-  <meta name="viewport" content="width:device-width,initial-scale=1.0" />
-  <link rel="stylesheet" href="{{
+  <head>
+    <title> {{ post[0] }} </title>
+    <meta name="viewport" content="width:device-width,initial-scale=1.0" />
+    <link rel="stylesheet" href="{{
 				 url_for('static',filename='style.css') }}">
-  <script>
+    <script>
     MathJax = {
       tex: {
         inlineMath: [['$', '$']]
@@ -14,18 +14,19 @@
     
     };
   </script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
-</head>
+    <script defer
+      src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+  </head>
 
-<body>
-  <div class="page_container">
-    <div class="blog_content">
-    <h1> {{ post[0] }} </h1>
-    <p id="post_date"> {{ post[1] }} </p>
-    {{ post[3]|safe }}
-  </div>
-  </div>
-  
-</body>
+  <body>
+    <div class="page_container">
+      <div class="blog_content">
+        <h1> {{ post[0] }} </h1>
+          <p id="post_date"> {{ post[1] }} <br> <a href="{{ url_for('index') }}" class="preview_link_wrapper"> ← back </a></p>
+        {{ post[3]|safe }}
+      </div>
+    </div>
+
+  </body>
 
 </html>
