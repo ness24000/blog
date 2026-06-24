@@ -3,6 +3,8 @@
 
 {% block content %}
 
+<div class = "post_preview_container">
+
 {% for post in posts %}
 
 <a class="preview_link_wrapper" href="/post/{{ post[0] }}">
@@ -14,4 +16,5 @@
 </a>
 {% endfor %}
 
+</div>
 {% endblock %}
