@@ -29,25 +29,7 @@
   </head>
 
   <body>
-    <!-- <div style="height: 1vw;"> </div> -->
-    <div class="page_container">
-      <div id="title_div">
-      <h1 class="title" href="{{ url_for('index') }}">
-        <a class="title_link" href="{{ url_for('index') }}"> TEXT(O)S </a>
-      </h1>
-
-      <div class="square">
-        <a class="square_small" id = "left_square_small" href="{{ url_for('index') }}"> Posts </a>
-        <a class="square_small" id = "right_square_small" href="{{ url_for('newsletter') }}"> Newsletter
-        </a>
-      </div>
-      <div class="divider2"> </div>
-      </div>
-
-        {% block content %} {% endblock %}
-      </div>
-    
-
+    {% block page %} {% endblock %}
   </body>
 
 </html>
