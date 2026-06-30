@@ -13,18 +13,10 @@
 </div>
 
 <script>
-  function updateFootnoteWidth() {
-      const main = document.getElementById("page_container");
-      const maxFootnoteWidth = parseFloat(getComputedStyle(main).maxWidth) / 3;
-      const marginRight = parseFloat(getComputedStyle(main).marginRight);
-      document.documentElement.style.setProperty("--footnote-width", Math.min(marginRight, maxFootnoteWidth) + "px");
-  }
-  updateFootnoteWidth();
-  window.addEventListener("resize", updateFootnoteWidth);
 
   document.querySelectorAll(".footnoteLink").forEach(function(link) {
       link.addEventListener("click", function() {
-          if (window.innerWidth < 800){
+          if (window.innerWidth < 1000){
               const linkedFootnote = this.id.replace("link","footnote");
               document.querySelectorAll(".footnote").forEach(function(footnote) {
                 if (footnote.id !== linkedFootnote){
