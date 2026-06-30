@@ -3,12 +3,37 @@
 {% block title %} {{ post[0] }} {% endblock %}
 
 {% block page %}
-<div class="page_container">
-  <div class="blog_content">
-    <h1> {{ post[0] }} </h1>
-    <p id="post_date"> {{ post[1] }} <br> <a href="{{ url_for('index') }}"
-        class="preview_link_wrapper"> ← back </a></p>
-    {{ post[3]|safe }}
-  </div>
+<div id="page_container">
+    <div class="blog_content">
+        <h1> {{ post[0] }} </h1>
+        <p id="post_date"> {{ post[1] }} <br> <a href="{{ url_for('index') }}"
+                class="preview_link_wrapper"> ← back </a></p>
+        {{ post[3]|safe }}
+    </div>
 </div>
+
+<script>
+  function updateFootnoteWidth() {
+      const main = document.getElementById("page_container");
+      const maxFootnoteWidth = parseFloat(getComputedStyle(main).maxWidth) / 3;
+      const marginRight = parseFloat(getComputedStyle(main).marginRight);
+      document.documentElement.style.setProperty("--footnote-width", Math.min(marginRight, maxFootnoteWidth) + "px");
+  }
+  updateFootnoteWidth();
+  window.addEventListener("resize", updateFootnoteWidth);
+
+  document.querySelectorAll(".footnoteLink").forEach(function(link) {
+      link.addEventListener("click", function() {
+          if (window.innerWidth < 800){
+              const linkedFootnote = this.id.replace("link","footnote");
+              document.querySelectorAll(".footnote").forEach(function(footnote) {
+                if (footnote.id !== linkedFootnote){
+                    footnote.classList.remove("visible")
+                }
+            });
+              document.getElementById(linkedFootnote).classList.toggle("visible");
+          }
+      });
+  });
+</script>
 {% endblock %}

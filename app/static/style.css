@@ -2,7 +2,7 @@
 @import url(https://fonts.bunny.net/css?family=alegreya-sans:300);
 @import url(https://fonts.bunny.net/css?family=alegreya:400,700);
 
-html {
+:root {
     color-scheme: light dark;
     --background: light-dark(white, #363636);
     --text: light-dark(#363636, white);
@@ -13,7 +13,7 @@ html {
     color: var(--text);
 }
 
-.page_container {
+#page_container {
     clear: both;
     width: 90%;
     max-width: 600px;
@@ -151,7 +151,7 @@ html {
 }
 
 .blog_content>p {
-    line-height: 150%;
+    line-height: 2rem;
 }
 
 .blog_content>h1 {
@@ -365,7 +365,7 @@ mjx-container {
 
 @media only screen and (max-width: 500px) {
 
-    .page_container {
+    #page_container {
         width: 95%;
     }
 
@@ -434,10 +434,6 @@ mjx-container {
         font-size: 1.3rem;
     }
 
-    .blog_content>p {
-        line-height: 150%;
-    }
-
     ol,
     ul {
         margin-left: 0px;
@@ -481,4 +477,62 @@ mjx-container {
     }
 
 
+}
+
+sup {
+    line-height: 0;
+    font-family: 'Alegreya Sans', sans-serif;
+    color: rgb(55, 120, 231);
+}
+
+.footnote {
+    font-family: 'Alegreya Sans', sans-serif;
+    font-size: 0.9rem;
+    padding-top: 0.6rem;
+    line-height: 1.2rem;
+    float: right;
+    clear: right;
+    margin-right: calc(-1 * var(--footnote-width));
+    width: calc(var(--footnote-width) - 20px);
+}
+
+.footnote img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 800px) {
+    #main {
+        margin-right: auto;
+    }
+
+    .footnoteLink {
+        cursor: pointer;
+    }
+
+    .footnote {
+        float: inline-end;
+        clear: both;
+        width: 100%;
+        font-size: 1.1rem;
+        margin: 0;
+        padding: 0;
+        visibility: hidden;
+        height: 0px;
+    }
+
+    .footnote img {
+        max-width: 90%;
+    }
+
+    .visible {
+        visibility: visible;
+        height: auto;
+        padding-top: 0.5rem;
+        margin-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.5rem;
+        border-top: 2px solid var(--text);
+        border-bottom: 2px solid var(--text);
+    }
 }
