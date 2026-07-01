@@ -31,14 +31,6 @@ class PostsHandler:
             r'<a class="footnote-backref"[^>]*>.*?</a>', "", html, flags=re.DOTALL
         )
 
-    def _inline_blockquote(self, html: str) -> str:
-        return re.sub(
-            r"<blockquote>(.*?)</blockquote>",
-            r'<br><em>\1</em></br>',
-            html,
-            flags=re.DOTALL,
-        )
-
     def _reformat_footnote_superscript(self, html: str, footnotes: dict) -> str:
         def replace_sup(m):
             num = m.group(1)
@@ -64,7 +56,6 @@ class PostsHandler:
             num = li.group(1)
             footnote = self._paragraph_to_br(li.group(2))
             footnote = self._remove_footnote_backref(footnote)
-            footnote = self._inline_blockquote(footnote)
             footnotes[num] = footnote
 
         html = self._reformat_footnote_superscript(html, footnotes)
