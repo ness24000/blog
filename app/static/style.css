@@ -1,5 +1,5 @@
 @import url(https://fonts.bunny.net/css?family=archivo-black:400);
-@import url(https://fonts.bunny.net/css?family=alegreya-sans:300);
+@import url(https://fonts.bunny.net/css?family=alegreya-sans:300,700);
 @import url(https://fonts.bunny.net/css?family=alegreya:400,700);
 
 :root {
@@ -94,13 +94,14 @@
 .post_preview_container {
     width: 80%;
     margin: auto;
-    border-top: 0.05em solid var(--text);
+    /* border-top: 0.05em solid var(--text);
+    border-bottom: 0.05em solid var(--text); */
 }
 
 .preview_link_wrapper {
     display: block;
     text-decoration: none;
-    border-bottom: 0.05em solid var(--text);
+    /* border-bottom: 0.05em solid var(--text); */
     text-align: left;
 }
 
@@ -111,52 +112,61 @@
 }
 
 .preview_header h3 {
-    /* font-weight: 300; */
     letter-spacing: -0.05em;
-    font-size: 28px;
-    margin-top: 0.2em;
-    margin-bottom: 0px;
+    /* font-size: 28px; */
+    font-size: 24px;
+    margin-top: 1rem;
+    margin-bottom: 0;
+    flex: 0 1 auto;
+    min-width: 0;
 }
 
 .title1 {
-   font-family: 'alegreya', serif;
-   font-weight: 700;
-   font-style: italic;
+    font-family: 'alegreya', serif;
+    font-weight: 300;
+    /* font-weight: 700; */
+    /* font-style: italic;
+    padding: 0 0.15em;
+    margin: 0 -0.15em; */
 }
 
 .title2 {
     font-family: 'alegreya', serif;
-    font-weight: 300;
+    font-weight: 700;
 }
 
 .title3 {
     font-family: 'alegreya', serif;
     font-weight: 300;
     font-style: italic;
+    padding: 0 0.15em;
+    margin: 0 -0.15em;
 }
 
 .title4 {
-    font-size:10px;
-    font-family: 'archivo black', sans-serif;
+    /* font-size:10px; */
+    font-family: 'alegreya sans', sans-serif;
     letter-spacing: 0;
-    
+
 }
 
-.preview_link_wrapper :hover h3 {
+.preview_link_wrapper:hover h3 {
     background-color: rgba(247, 247, 80, 0.363);
 }
 
 .preview_link_wrapper .date {
-    margin-top: 3px;
-    margin-bottom: 5px;
+    margin-top: 0;
+    margin-bottom: 0;
     font-size: 17px;
     font-family: 'Alegreya Sans', sans-serif;
     line-height: 1.3;
+    flex: 0 0 auto;
+    white-space: nowrap;
 }
 
 .preview_link_wrapper p {
     margin-top: 0em;
-    margin-bottom: 0.3em;
+    margin-bottom: 1rem;
     font-size: 19px;
     font-family: 'Alegreya sans', serif;
 }
@@ -181,6 +191,10 @@
     margin-bottom: 0px;
     margin-top: 20px;
     line-height: 1;
+}
+
+.blog_content>h2{
+    font-family: 'alegreya', sans-serif;
 }
 
 #post_date {
@@ -411,9 +425,15 @@ mjx-container {
     .post_preview_container {
         width: 95%;
     }
+
     .preview_link_wrapper {
         width: 100%;
 
+    }
+
+    .title1,
+    .title3 {
+        padding: 0 0em;
     }
 
     .blog_content>h1 {
@@ -437,7 +457,15 @@ mjx-container {
 
     .preview_link_wrapper h3 {
         font-size: 22px;
-        line-height: 1.2;
+    }
+
+    .preview_link_wrapper .date {
+        /* margin-top: -0.3em; */
+        font-size: 16px;
+        /* margin-bottom: 0; */
+     
+        font-family: 'Alegreya Sans', sans-serif;
+     
     }
 
     .preview_link_wrapper p {

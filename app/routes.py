@@ -90,7 +90,7 @@ def newsletter_unsubscribe(signed_email_address):
 @app.route("/post/<int:post_id>")
 def post(post_id):
     post = posts_handler.get_post(post_id)
-    return render_template("post.html", post=post)
+    return render_template("post.html", post_id = post_id, post=post)
 
 
 @app.route("/add_post", methods=["GET", "POST"])

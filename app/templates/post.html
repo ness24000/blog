@@ -5,17 +5,11 @@
 {% block page %}
 <div class="page_container">
   <div class="blog_content">
-    <h1> {{ post[0] }} </h1>
+    <!-- <h1 class="title{{ (post_id|int // 4 + post_id|int % 4) % 4 + 1 }}"> {{ post[0] }} </h1> -->
+    <h1 class="title1"> {{ post[0] }} </h1>
     <p id="post_date"> {{ post[1] }} <br> <a href="{{ url_for('index') }}"
         class="back_link"> ← back </a></p>
     {{ post[3]|safe }}
   </div>
 </div>
-
-<script>
-    document.querySelectorAll('.page_container h1').forEach(h1 => {
-        const n = Math.floor(Math.random() * 4) + 1;
-        h1.classList.add(`title${n}`);
-    });
-</script>
 {% endblock %}

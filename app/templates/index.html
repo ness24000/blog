@@ -9,7 +9,8 @@
 
     <a class="preview_link_wrapper" href="/post/{{ post[0] }}">
             <div class="preview_header">
-                <h3>{{ post[1] }}</h3>
+                <!-- <h3 class="title{{ (post[0]|int // 4 + post[0]|int % 4) % 4 + 1 }}">{{ post[1] }}</h3> -->
+                <h3 class="title1">{{ post[1] }}</h3>
                 <p class="date">{{ post[2] }}</p>
             </div>
 
@@ -21,10 +22,4 @@
 
 </div>
 
-<script>
-    document.querySelectorAll('.preview_header > h3').forEach(h3 => {
-        const n = Math.floor(Math.random() * 4) + 1;
-        h3.classList.add(`title${n}`);
-    });
-</script>
 {% endblock %}
