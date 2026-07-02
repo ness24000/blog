@@ -20,6 +20,48 @@ class PostsHandler:
         self.media_handler = media_handler
         self.logger = logger
 
+    def _paragraph_to_br(self, html: str) -> str:
+        html = re.sub(r"</p>\s*<p>", r"<br>", html)
+        html = re.sub(r"<p>|</p>", "", html)
+        html = re.sub(r"\$\$\s*<br>", "$$", html)
+        return html
+
+    def _remove_footnote_backref(self, html: str) -> str:
+        return re.sub(
+            r'<a class="footnote-backref"[^>]*>.*?</a>', "", html, flags=re.DOTALL
+        )
+
+    def _reformat_footnote_superscript(self, html: str, footnotes: dict) -> str:
+        def replace_sup(m):
+            num = m.group(1)
+            sup = f'<sup class="footnoteLink" id="link{num}">{num}</sup>'
+            span = f'<span class="footnote" id="footnote{num}"><sup>{num}</sup> {footnotes.get(num, "")}</span>'
+            return sup + span
+
+        return re.sub(
+            r'<sup id="fnref:(\d+)"><a class="footnote-ref" href="#fn:\d+">\d+</a></sup>',
+            replace_sup,
+            html,
+        )
+
+    def _process_footnotes(self, html: str) -> str:
+        footnote_div = re.search(r'<div class="footnote">.*?</div>', html, re.DOTALL)
+        if not footnote_div:
+            return html
+
+        footnotes = {}
+        for li in re.finditer(
+            r'<li id="fn:(\d+)">(.*?)</li>', footnote_div.group(), re.DOTALL
+        ):
+            num = li.group(1)
+            footnote = self._paragraph_to_br(li.group(2))
+            footnote = self._remove_footnote_backref(footnote)
+            footnotes[num] = footnote
+
+        html = self._reformat_footnote_superscript(html, footnotes)
+        html = re.sub(r'<div class="footnote">.*?</div>', "", html, flags=re.DOTALL)
+        return html
+
     def _format_post_input(
         self, title: str, preview: str, content: str, post_id: int
     ) -> Tuple[str, ...]:
@@ -31,7 +73,10 @@ class PostsHandler:
 
         content_html = re.sub(IMG_PATTERN, produce_image_path, content)
 
-        content_html = markdown.markdown(content_html, extensions=["tables"])
+        content_html = markdown.markdown(
+            content_html, extensions=["tables", "footnotes"]
+        )
+        content_html = self._process_footnotes(content_html)
 
         if preview == "":
 

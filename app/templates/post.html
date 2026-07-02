@@ -3,13 +3,29 @@
 {% block title %} {{ post[0] }} {% endblock %}
 
 {% block page %}
-<div class="page_container">
+<div id="page_container">
   <div class="blog_content">
-    <!-- <h1 class="title{{ (post_id|int // 4 + post_id|int % 4) % 4 + 1 }}"> {{ post[0] }} </h1> -->
     <h1 class="title1"> {{ post[0] }} </h1>
     <p id="post_date"> {{ post[1] }} <br> <a href="{{ url_for('index') }}"
         class="back_link"> ← back </a></p>
     {{ post[3]|safe }}
   </div>
 </div>
+
+<script>
+
+  document.querySelectorAll(".footnoteLink").forEach(function(link) {
+      link.addEventListener("click", function() {
+          if (window.innerWidth < 1000){
+              const linkedFootnote = this.id.replace("link","footnote");
+              document.querySelectorAll(".footnote").forEach(function(footnote) {
+                if (footnote.id !== linkedFootnote){
+                    footnote.classList.remove("visible")
+                }
+            });
+              document.getElementById(linkedFootnote).classList.toggle("visible");
+          }
+      });
+  });
+</script>
 {% endblock %}
