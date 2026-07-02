@@ -2,7 +2,7 @@
 @import url(https://fonts.bunny.net/css?family=alegreya-sans:300);
 @import url(https://fonts.bunny.net/css?family=alegreya:400,700);
 
-html {
+:root {
     color-scheme: light dark;
     --background: light-dark(white, #363636);
     --text: light-dark(#363636, white);
@@ -27,24 +27,6 @@ html {
     width: 30%;
     margin: auto;
 }
-
-#title_img {
-    width: 100%;
-    aspect-ratio: 3 / 1;
-    background-color: var(--text);
-    mask-image: url('/static/titles/title_n.svg');
-    mask-size: contain;
-    mask-repeat: no-repeat;
-    mask-position: center;
-    /* safari compatibility */
-    -webkit-mask-image: url('/static/titles/title_n.svg');
-    -webkit-mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    margin-bottom: 5px;
-}
-
-
 
 .title_link {
     text-decoration: none;

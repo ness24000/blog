@@ -1,21 +1,29 @@
 {% extends 'base.html' %}
 
-{% block page %} 
+{% block page %}
 
 <div class="page_container">
-      <div id="title_div">
-      <h1 class="title" href="{{ url_for('index') }}">
-        <a class="title_link" href="{{ url_for('index') }}"> TEXT(O)S </a>
-      </h1>
+  <div id="title_div">
+    
+    <div id="title_svg"></div>
+    <script>
+      fetch("{{ url_for('static', filename='titles/textos.svg') }}")
+        .then(r => r.text())
+        .then(svg => {
+            document.getElementById('title_svg').innerHTML = svg;
+        });
+    </script>
 
-      <div class="square">
-        <a class="square_small" id = "left_square_small" href="{{ url_for('index') }}"> Posts </a>
-        <a class="square_small" id = "right_square_small" href="{{ url_for('newsletter') }}"> Newsletter
-        </a>
-      </div>
-      <div class="divider2"> </div>
-      </div>
+    <div class="square">
+      <a class="square_small" id="left_square_small"
+        href="{{ url_for('index') }}"> Posts </a>
+      <a class="square_small" id="right_square_small"
+        href="{{ url_for('newsletter') }}"> Newsletter
+      </a>
+    </div>
+    <div class="divider2"> </div>
+  </div>
 
-        {% block content %} {% endblock %}
-      </div>
+  {% block content %} {% endblock %}
+</div>
 {% endblock %}
