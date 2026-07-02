@@ -3,18 +3,28 @@
 
 {% block content %}
 
-<div class = "post_preview_container">
+<div class="post_preview_container">
+    
+    {% for post in posts %}
 
-{% for post in posts %}
+    <a class="preview_link_wrapper" href="/post/{{ post[0] }}">
+            <div class="preview_header">
+                <h3>{{ post[1] }}</h3>
+                <p class="date">{{ post[2] }}</p>
+            </div>
 
-<a class="preview_link_wrapper" href="/post/{{ post[0] }}">
-    <div class="preview">
-        <h3> {{ post[1] }} </h3>
-        <p class="date"> {{ post[2] }} </p>
-        {{ post[3]|safe }}
-    </div>
-</a>
-{% endfor %}
+            {{ post[3]|safe }}
+    </a>
+
+
+    {% endfor %}
 
 </div>
+
+<script>
+    document.querySelectorAll('.preview_header > h3').forEach(h3 => {
+        const n = Math.floor(Math.random() * 4) + 1;
+        h3.classList.add(`title${n}`);
+    });
+</script>
 {% endblock %}
