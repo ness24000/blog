@@ -575,7 +575,8 @@ sup {
         float: inline-end;
         clear: both;
         width: 100%;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
+        line-height: 1.4rem;
         margin: 0;
         padding: 0;
         visibility: hidden;
