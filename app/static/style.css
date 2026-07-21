@@ -186,7 +186,7 @@
 
 .blog_content>h1 {
     /* font-family: 'alegreya', serif; */
-    font-size: 45px;
+      font-size: 45px;
     /* font-weight: 300; */
     letter-spacing: -0.05em;
     text-align: center;
@@ -197,6 +197,7 @@
 
 .blog_content>h2{
     font-family: 'alegreya', sans-serif;
+    line-height: 0.9;
 }
 
 #post_date {
@@ -226,7 +227,7 @@ img {
     display: block;
     object-fit: contain;
     margin: auto;
-    border-radius: 8px;
+    /* border-radius: 8px; */
 }
 
 /* Administrator side styling */
