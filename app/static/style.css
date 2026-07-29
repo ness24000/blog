@@ -26,7 +26,8 @@
 
 /* General text and geometry styling */
 #title_div {
-    width: 40%;
+    width: 30%;
+    min-width: 170px;
     margin: auto;
 }
 
@@ -425,8 +426,13 @@ mjx-container {
         font-size: 45px;
     }
 
+    .divider2{
+        height: 0;
+    }
     .post_preview_container {
-        width: 95%;
+        width: 100%;
+        border-top: 0;
+        border-bottom: 0;
     }
 
     .preview_link_wrapper {
