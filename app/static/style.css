@@ -4,8 +4,11 @@
 
 :root {
     color-scheme: light dark;
-    --background: light-dark(white, #363636);
-    --text: light-dark(#363636, white);
+     /* temporarily disable dark mode */
+    /*--background: light-dark(white, #363636);
+    --text: light-dark(#363636, white); */
+    --background: white;
+    --text: #363636;
     --page-max-width: 600px;
     --footnote-width: 200px;
 }
